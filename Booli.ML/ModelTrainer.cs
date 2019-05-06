@@ -33,21 +33,24 @@ namespace Booli.ML
     /// Train and save model for predicting housing prices
     /// </summary>
     /// <param name="area">area for which the model should be trained on</param>
-    public void TrainModel()
+    public void GetTrainingDataAndTrainModel()
     {
       if (!File.Exists(modelPath_))
       {
-        ConstructPipelineForTraining(mlContext_);
+        var currentListings = GetDataForTraining().Result;
+        ConstructPipelineForTraining(mlContext_, currentListings);
       }
     }
 
-    private void ConstructPipelineForTraining(MLContext mlContext)
+    private async Task<IList<SoldListing>> GetDataForTraining()
     {
-      var request = client_.GetSoldItemsAsync(area_);
-      request.Wait();
-      var soldListings = request.Result.SoldListings;
+      var soldItems = await client_.GetSoldItemsAsync(area_);
+      return soldItems.SoldListings;
+    }
 
-      var trainer = mlContext.Regression.Trainers.FastTreeTweedie("Label", "Features");
+    private void ConstructPipelineForTraining(MLContext mlContext, IList<SoldListing> houseDataForTraining)
+    {
+      var trainer = mlContext.Regression.Trainers.FastTreeTweedie(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
 
       var pipeline = mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures", nameof(SoldListing.ListPrice),
                                                                                              nameof(SoldListing.LivingArea),
@@ -61,17 +64,13 @@ namespace Booli.ML
                                          .Append(mlContext.Transforms.CopyColumns(outputColumnName: DefaultColumnNames.Label, nameof(SoldListing.SoldPrice)))
                                          .Append(trainer);
 
-      var dataView = mlContext.Data.LoadFromEnumerable(soldListings);
+      var dataView = mlContext.Data.LoadFromEnumerable(houseDataForTraining);
       var model = pipeline.Fit(dataView);
       var metrics = mlContext.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
 
       PrintRegressionFoldsAverageMetrics(trainer.ToString(), metrics);
 
       SaveModelAsFile(mlContext_, model);
-
-      //var predictionEngine = mlContext.Model.CreatePredictionEngine<SoldListing, ListingPrediction>(model);
-
-      //PrintTestData(predictionEngine);
     }
 
     public void EvaluateCurrentListings()

@@ -31,7 +31,7 @@ namespace Booli.APP
       ////listings.Result.CurrentListings.ToList().ForEach(s => Console.WriteLine($"Living area: {s.LivingArea}m^2\r\nRooms: {s.Rooms}\r\nRent: {s.Rent}\r\nYear: {s.ConstructionYear}\r\nAddress: {s.Location.Address.StreetAddress}\r\nFloor: {s.Floor}\r\nSoldPrice: {s.SoldPrice}\r\n-----------------\r\n"));
 
       ModelTrainer model = new ModelTrainer(client, "svedmyra");
-      model.TrainModel();
+      model.GetTrainingDataAndTrainModel();
       model.EvaluateCurrentListings();
     }
   }
