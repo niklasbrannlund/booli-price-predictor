@@ -1,1 +1,1 @@
-# booli-housing-predictor
+# booli-price-predictor
