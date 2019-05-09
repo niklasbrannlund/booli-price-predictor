@@ -139,7 +139,7 @@ namespace BooliAPI.Models
     public string Url { get; set; }
     
     [JsonProperty("additionalArea")]
-    public int? AdditionalArea { get; set; }
+    public float AdditionalArea { get; set; }
 
     [NoColumn]
     [JsonProperty("apartmentNumber")]
@@ -186,8 +186,7 @@ namespace BooliAPI.Models
 
     [JsonProperty("livingArea")]
     public float LivingArea { get; set; }
-
-    [NoColumn]
+    
     [JsonProperty("additionalArea")]
     public float AdditionalArea { get; set; }
 
