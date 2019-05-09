@@ -79,7 +79,7 @@ namespace Booli.ML
       var request = client_.GetListingsAsync(area_);
       request.Wait();
       var currentListings = request.Result.CurrentListings;
-
+      
       PreProcessData(currentListings);
 
       ITransformer trainedModel;
@@ -95,18 +95,20 @@ namespace Booli.ML
 
     private void PreProcessData(IList<Listing> currentListings)
     {
-      
-      if (currentListings.Any(x => x.ConstructionYear == 0))
+      if (currentListings.Any(x => x.HasMissingConstructionYear()))
       {
-        var listingsWithoutConstructionYear = currentListings.Where(x => x.ConstructionYear == 0);
-        foreach (var brokenListing in listingsWithoutConstructionYear)
-        {
-          // copy valid construction year from another listing that have same address
-          brokenListing.ConstructionYear = currentListings.FirstOrDefault(x => x.ConstructionYear > 0 && Regex.Replace(x.Location.Address.StreetAddress, @"[\d-]", string.Empty)  == Regex.Replace(brokenListing.Location.Address.StreetAddress, @"[\d-]", string.Empty) ).ConstructionYear;
-        }
-        
+        var listingsWithoutConstructionYear = currentListings.Where(x => x.HasMissingConstructionYear());
+        CopyConstructionYearFromListingOnSameAddress(currentListings, listingsWithoutConstructionYear);
       }
 
+    }
+
+    private static void CopyConstructionYearFromListingOnSameAddress(IList<Listing> currentListings, IEnumerable<Listing> listingsWithoutConstructionYear)
+    {
+      foreach (var brokenListing in listingsWithoutConstructionYear)
+      {
+        brokenListing.ConstructionYear = currentListings.FirstOrDefault(x => x.HasValidConstructionYear(brokenListing)).ConstructionYear;                 
+      }
     }
 
     private void PrintPrediction(PredictionEngine<Listing, ListingPrediction> predictionEngine, IList<Listing> currentListings)

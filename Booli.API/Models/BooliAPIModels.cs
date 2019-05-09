@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.ML.Data;
 using Newtonsoft.Json;
 
@@ -209,6 +210,11 @@ namespace BooliAPI.Models
 
     // property to be predicted
     public float SoldPrice => 0;
+
+    public bool HasMissingConstructionYear() => ConstructionYear == 0;
+
+    public bool HasValidConstructionYear(Listing brokenListing) => this.ConstructionYear > 0 && Regex.Replace(brokenListing.Location.Address.StreetAddress, @"[\d-]", string.Empty) ==
+                                                                                         Regex.Replace(this.Location.Address.StreetAddress, @"[\d-]", string.Empty);
   }
 
   public class SearchParams
