@@ -54,6 +54,7 @@ namespace Booli.ML
 
       var pipeline = mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures", nameof(SoldListing.ListPrice),
                                                                                              nameof(SoldListing.LivingArea),
+                                                                                             nameof(SoldListing.AdditionalArea),
                                                                                              nameof(SoldListing.Rooms),
                                                                                              nameof(SoldListing.ConstructionYear),
                                                                                              nameof(SoldListing.Rent),
@@ -122,6 +123,7 @@ namespace Booli.ML
         Console.WriteLine($"*       Type:                        {listing.ObjectType} ");
         Console.WriteLine($"*       Listing price:               {listing.ListPrice} ");
         Console.WriteLine($"*       Living area:                 {listing.LivingArea} m^2");
+        Console.WriteLine($"*       Additional area:             {listing.AdditionalArea} m^2");
         Console.WriteLine($"*       Rooms:                       {listing.Rooms}");
         Console.WriteLine($"*       Floor:                       {listing.Floor}");
         Console.WriteLine($"*       Rent:                        {listing.Rent}");

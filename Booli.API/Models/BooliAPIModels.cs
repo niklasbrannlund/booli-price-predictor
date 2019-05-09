@@ -136,8 +136,7 @@ namespace BooliAPI.Models
     [NoColumn]
     [JsonProperty("url")]
     public string Url { get; set; }
-
-    [NoColumn]
+    
     [JsonProperty("additionalArea")]
     public int? AdditionalArea { get; set; }
 
