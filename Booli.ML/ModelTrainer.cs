@@ -4,6 +4,7 @@ using BooliAPI.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers.FastTree;
+using Microsoft.Data.DataView;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static Microsoft.ML.TrainCatalogBase;
+using System.Collections.Immutable;
 
 namespace Booli.ML
 {
@@ -42,17 +44,6 @@ namespace Booli.ML
         SaveModelAsFile(model);
       }
     }
-
-    private ITransformer TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<FastTreeTweedieModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
-    {
-      var dataView = mlContext_.Data.LoadFromEnumerable(houseDataForTraining);
-      var model = pipeline.Fit(dataView);
-      var metrics = mlContext_.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
-
-      PrintRegressionFoldsAverageMetrics(metrics);
-      return model;
-    }
-
     private async Task<IList<SoldListing>> GetDataForTraining()
     {
       var soldItems = await client_.GetSoldItemsAsync(area_);
@@ -72,10 +63,20 @@ namespace Booli.ML
                                                                                              nameof(SoldListing.SoldYear))
                                          .Append(mlContext_.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
                                          .Append(mlContext_.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, "NumericalFeatures", "CategoricalFeatures"))
-                                         .Append(mlContext_.Transforms.CopyColumns(outputColumnName: DefaultColumnNames.Label, nameof(SoldListing.SoldPrice)))
                                          .Append(trainer);
 
       return pipeline;
+    }
+
+    private ITransformer TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<FastTreeTweedieModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
+    {
+      var dataView = mlContext_.Data.LoadFromEnumerable(houseDataForTraining);
+      var model = pipeline.Fit(dataView);
+      var metrics = mlContext_.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
+
+      PrintRegressionFoldsAverageMetrics(metrics);
+      //PrintFeatureImportanceValues(dataView, model);
+      return model;
     }
 
     public void EvaluateCurrentListings()

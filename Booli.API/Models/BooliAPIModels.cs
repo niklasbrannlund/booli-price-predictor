@@ -126,8 +126,9 @@ namespace BooliAPI.Models
         return date.Year;
       }
     }
-
+    
     [JsonProperty("soldPrice")]
+    [ColumnName("Label")]
     public float SoldPrice { get; set; }
 
     [NoColumn]
