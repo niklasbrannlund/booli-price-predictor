@@ -18,16 +18,16 @@ namespace Booli.ML
 {
   public class ModelTrainer
   {
-    private MLContext mlContext_;
-    private readonly IAPIClient client_;
-    private string modelPath_;
-    private readonly string area_;
+    private MLContext _mlContext;
+    private readonly IAPIClient _client;
+    private string _modelPath;
+    private readonly string _area;
     public ModelTrainer(IAPIClient client, string area)
     {
-      mlContext_ = new MLContext();
-      client_ = client;
-      area_ = area;
-      modelPath_ = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}.zip");
+      _mlContext = new MLContext();
+      _client = client;
+      _area = area;
+      _modelPath = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}.zip");
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ namespace Booli.ML
     /// <param name="area">area for which the model should be trained on</param>
     public void GetTrainingDataAndTrainModel()
     {
-      if (!File.Exists(modelPath_))
+      if (!File.Exists(_modelPath))
       {
         var currentListings = GetDataForTraining().Result;
         var pipeline = ConstructPipelineForTraining();
@@ -46,14 +46,14 @@ namespace Booli.ML
     }
     private async Task<IList<SoldListing>> GetDataForTraining()
     {
-      var soldItems = await client_.GetSoldItemsAsync(area_);
+      var soldItems = await _client.GetSoldItemsAsync(_area);
       return soldItems.SoldListings;
     }
 
     private EstimatorChain<RegressionPredictionTransformer<FastTreeTweedieModelParameters>> ConstructPipelineForTraining()
     {
-      var trainer = mlContext_.Regression.Trainers.FastTreeTweedie(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
-      var pipeline = mlContext_.Transforms.Concatenate(outputColumnName: "NumericalFeatures", nameof(SoldListing.ListPrice),
+      var trainer = _mlContext.Regression.Trainers.FastTreeTweedie(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
+      var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures", nameof(SoldListing.ListPrice),
                                                                                              nameof(SoldListing.LivingArea),
                                                                                              nameof(SoldListing.AdditionalArea),
                                                                                              nameof(SoldListing.Rooms),
@@ -61,8 +61,8 @@ namespace Booli.ML
                                                                                              nameof(SoldListing.Rent),
                                                                                              nameof(SoldListing.Floor),
                                                                                              nameof(SoldListing.SoldYear))
-                                         .Append(mlContext_.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
-                                         .Append(mlContext_.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, "NumericalFeatures", "CategoricalFeatures"))
+                                         .Append(_mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
+                                         .Append(_mlContext.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, "NumericalFeatures", "CategoricalFeatures"))
                                          .Append(trainer);
 
       return pipeline;
@@ -70,9 +70,9 @@ namespace Booli.ML
 
     private ITransformer TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<FastTreeTweedieModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
     {
-      var dataView = mlContext_.Data.LoadFromEnumerable(houseDataForTraining);
+      var dataView = _mlContext.Data.LoadFromEnumerable(houseDataForTraining);
       var model = pipeline.Fit(dataView);
-      var metrics = mlContext_.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
+      var metrics = _mlContext.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
 
       PrintRegressionFoldsAverageMetrics(metrics);
       //PrintFeatureImportanceValues(dataView, model);
@@ -81,19 +81,19 @@ namespace Booli.ML
 
     public void EvaluateCurrentListings()
     {
-      var request = client_.GetListingsAsync(area_);
+      var request = _client.GetListingsAsync(_area);
       request.Wait();
       var currentListings = request.Result.CurrentListings;
       
       PreProcessData(currentListings);
 
       ITransformer trainedModel;
-      using (var stream = File.OpenRead(modelPath_))
+      using (var stream = File.OpenRead(_modelPath))
       {
-        trainedModel = mlContext_.Model.Load(stream);
+        trainedModel = _mlContext.Model.Load(stream);
       }
 
-      var predEngine = mlContext_.Model.CreatePredictionEngine<Listing, ListingPrediction>(trainedModel);
+      var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(trainedModel);
       PrintPrediction(predEngine, currentListings);
 
     }
@@ -120,7 +120,7 @@ namespace Booli.ML
     {
 
       Console.WriteLine($"*************************************************************************************************************");
-      Console.WriteLine($"*       Predictions for housing prices in {area_}      ");
+      Console.WriteLine($"*       Predictions for housing prices in {_area}      ");
       Console.WriteLine($"*------------------------------------------------------------------------------------------------------------\r\n\r\n");
 
       foreach (var listing in currentListings)
@@ -142,8 +142,8 @@ namespace Booli.ML
 
     private void SaveModelAsFile(ITransformer model)
     {
-      using (var fileStream = new FileStream(modelPath_, FileMode.Create, FileAccess.Write, FileShare.Write))
-        mlContext_.Model.Save(model, fileStream);
+      using (var fileStream = new FileStream(_modelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
+        _mlContext.Model.Save(model, fileStream);
     }
 
     private static void PrintRegressionFoldsAverageMetrics(IReadOnlyList<CrossValidationResult<RegressionMetrics>> crossValidationResults)
@@ -168,7 +168,7 @@ namespace Booli.ML
     private async Task<IList<SoldListing>> FetchTrainingDataAsync(string area)
     {
       // retrieve the data
-      var soldResult = await client_.GetSoldItemsAsync(area);
+      var soldResult = await _client.GetSoldItemsAsync(area);
       var soldListings = soldResult.SoldListings;
       return soldListings;
     }
