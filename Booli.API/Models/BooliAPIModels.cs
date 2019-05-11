@@ -107,6 +107,7 @@ namespace BooliAPI.Models
     [JsonProperty("published")]
     public string Published { get; set; }
 
+    [NoColumn]
     [JsonProperty("objectType")]
     public string ObjectType { get; set; }
 
@@ -167,7 +168,7 @@ namespace BooliAPI.Models
         return date.Year;
       }
     }
-     
+
     [NoColumn]
     [JsonProperty("source")]
     public Source Source { get; set; }
@@ -179,6 +180,7 @@ namespace BooliAPI.Models
     [JsonProperty("location")]
     public Location Location { get; set; }
 
+    [NoColumn]
     [JsonProperty("objectType")]
     public string ObjectType { get; set; }
 

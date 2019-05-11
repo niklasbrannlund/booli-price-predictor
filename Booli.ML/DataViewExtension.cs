@@ -9,14 +9,8 @@ namespace Booli.ML
 {
   public static class DataViewExtension
   {
-    public static string[] GetNumericalFeatureColumnNames(this IDataView dw) => dw.Schema
-                                                                      .Where(feature => feature.Name != "Label" && 
-                                                                             feature.Type.ToString() == "R4")
+    public static string[] GetFeatureColumnNames(this IDataView dw) => dw.Schema
+                                                                      .Where(feature => feature.Name != "Label")
                                                                       .Select(f => f.Name).ToArray();
-
-    public static string[] GetCategoricalFeatureColumnNames(this IDataView dw) => dw.Schema
-                                                                  .Where(feature => feature.Name != "Label" &&
-                                                                         feature.Type.ToString() == "Text")
-                                                                  .Select(f => f.Name).ToArray();
   }
 }

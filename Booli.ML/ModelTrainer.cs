@@ -50,32 +50,29 @@ namespace Booli.ML
       return soldItems.SoldListings;
     }
 
-    private EstimatorChain<RegressionPredictionTransformer<FastTreeTweedieModelParameters>> ConstructPipelineForTraining()
+    private EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.LinearRegressionModelParameters>> ConstructPipelineForTraining()
     {
-      var trainer = _mlContext.Regression.Trainers.FastTreeTweedie(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
-      var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures", nameof(SoldListing.ListPrice),
+      var trainer = _mlContext.Regression.Trainers.StochasticDualCoordinateAscent(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
+      var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, nameof(SoldListing.ListPrice),
                                                                                              nameof(SoldListing.LivingArea),
                                                                                              nameof(SoldListing.AdditionalArea),
                                                                                              nameof(SoldListing.Rooms),
                                                                                              nameof(SoldListing.ConstructionYear),
                                                                                              nameof(SoldListing.Rent),
                                                                                              nameof(SoldListing.Floor),
-                                                                                             nameof(SoldListing.SoldYear))
-                                         .Append(_mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
-                                         .Append(_mlContext.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, "NumericalFeatures", "CategoricalFeatures"))
-                                         .Append(trainer);
+                                                                                             nameof(SoldListing.SoldYear)).Append(trainer);
 
       return pipeline;
     }
 
-    private ITransformer TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<FastTreeTweedieModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
+    private ITransformer TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.LinearRegressionModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
     {
       var dataView = _mlContext.Data.LoadFromEnumerable(houseDataForTraining);
       var model = pipeline.Fit(dataView);
       var metrics = _mlContext.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
 
       PrintRegressionFoldsAverageMetrics(metrics);
-      //PrintFeatureImportanceValues(dataView, model);
+      PrintFeatureImportanceValues(dataView);
       return model;
     }
 
@@ -163,6 +160,36 @@ namespace Booli.ML
       Console.WriteLine($"*       Average Loss Function: {lossFunction.Average():0.###}  ");
       Console.WriteLine($"*       Average R-squared: {R2.Average():0.###}  ");
       Console.WriteLine($"*************************************************************************************************************");
+    }
+
+    private void PrintFeatureImportanceValues(IDataView dataView)
+    {
+      var featureColumnNames = dataView.GetFeatureColumnNames();
+
+      var pipeline = _mlContext.Transforms.Concatenate(DefaultColumnNames.Features, featureColumnNames)
+                    .Append(_mlContext.Transforms.Normalize(DefaultColumnNames.Features))
+                    .Append(_mlContext.Regression.Trainers.StochasticDualCoordinateAscent());
+
+      var model = pipeline.Fit(dataView);
+      var preprocessedTrainingData = model.Transform(dataView);
+
+      ImmutableArray<RegressionMetricsStatistics> permutationFeatureImportance =
+                                                  _mlContext
+                                                  .Regression
+                                                  .PermutationFeatureImportance(model.LastTransformer, preprocessedTrainingData, permutationCount: 3);
+
+      // Order features by importance
+      var featureImportanceMetrics =
+          permutationFeatureImportance
+              .Select((metric, index) => new { index, metric.RSquared })
+              .OrderByDescending(myFeatures => Math.Abs(myFeatures.RSquared.Mean));
+
+      Console.WriteLine("Feature\tPFI");
+
+      foreach (var feature in featureImportanceMetrics)
+      {
+        Console.WriteLine($"{featureColumnNames[feature.index],-20}|\t{feature.RSquared.Mean:F6}");
+      }
     }
 
     private async Task<IList<SoldListing>> FetchTrainingDataAsync(string area)
