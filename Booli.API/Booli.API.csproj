@@ -126,7 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BooliAPIClient.cs" />
-    <Compile Include="IAuthenticationHandler.cs" />
     <Compile Include="Models\BooliAPIModels.cs" />
     <Compile Include="IAPIClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
