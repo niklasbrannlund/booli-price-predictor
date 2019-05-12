@@ -53,14 +53,17 @@ namespace Booli.ML
     private EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.LinearRegressionModelParameters>> ConstructPipelineForTraining()
     {
       var trainer = _mlContext.Regression.Trainers.StochasticDualCoordinateAscent(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
-      var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, nameof(SoldListing.ListPrice),
+      var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures",nameof(SoldListing.ListPrice),
                                                                                              nameof(SoldListing.LivingArea),
                                                                                              nameof(SoldListing.AdditionalArea),
                                                                                              nameof(SoldListing.Rooms),
                                                                                              nameof(SoldListing.ConstructionYear),
                                                                                              nameof(SoldListing.Rent),
                                                                                              nameof(SoldListing.Floor),
-                                                                                             nameof(SoldListing.SoldYear)).Append(trainer);
+                                                                                             nameof(SoldListing.SoldYear))
+                                         .Append(_mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
+                                         .Append(_mlContext.Transforms.Concatenate(outputColumnName: DefaultColumnNames.Features, "NumericalFeatures", "CategoricalFeatures"))
+                                         .Append(trainer);
 
       return pipeline;
     }
@@ -72,7 +75,8 @@ namespace Booli.ML
       var metrics = _mlContext.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
 
       PrintRegressionFoldsAverageMetrics(metrics);
-      PrintFeatureImportanceValues(dataView);
+      //PrintFeatureImportanceValues(dataView);
+
       return model;
     }
 
