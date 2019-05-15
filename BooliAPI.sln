@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML", "Booli.ML\Booli.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.App", "Booli.APP\Booli.App.csproj", "{436E861E-5C9E-41AF-B723-425024A4744E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML.Test", "Booli.ML.Test\Booli.ML.Test.csproj", "{287505AB-DC67-42B6-891A-8EE220ED0919}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,14 @@ Global
 		{436E861E-5C9E-41AF-B723-425024A4744E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{436E861E-5C9E-41AF-B723-425024A4744E}.Release|x64.ActiveCfg = Release|Any CPU
 		{436E861E-5C9E-41AF-B723-425024A4744E}.Release|x64.Build.0 = Release|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Debug|x64.Build.0 = Debug|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|x64.ActiveCfg = Release|Any CPU
+		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
