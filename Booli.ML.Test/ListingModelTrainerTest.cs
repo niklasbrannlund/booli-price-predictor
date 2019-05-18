@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BooliAPI;
 using BooliAPI.Models;
@@ -12,10 +14,13 @@ namespace Booli.ML.Test
   public class ListingModelTrainerTest
   {
     private IAPIClient _client;
+    private List<SoldListing> _listingsForTraining;
 
     [TestInitialize]
     public void Setup()
     {
+      _listingsForTraining = new List<SoldListing>();
+
       var apiClientMock = new Mock<IAPIClient>();
       _client = apiClientMock.Object;
     }
@@ -23,9 +28,32 @@ namespace Booli.ML.Test
     [TestMethod]
     public void CanConstruct()
     {
-      var currentListings = new List<SoldListing>();
-      var modeltrainer = new ListingModelTrainer(currentListings);
+      // Arrange & Act
+      var modeltrainer = new ListingModelTrainer(_listingsForTraining);
+
+      // Assert
       Assert.IsNotNull(modeltrainer);
+    }
+
+    [TestMethod]
+    public void VerifyCorrectNameOfModel()
+    {
+      // Arrange
+      var modeltrainer = new ListingModelTrainer(_listingsForTraining);
+      var currentWeek = new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+      
+      // Act
+      var modelName = ExtractModelNameFromPath(modeltrainer.ModelPath);
+
+      // Assert
+      Assert.AreEqual($"housing_prediction_model_{currentWeek}.zip", modelName, "Wrong model name");
+    }
+
+
+    private string ExtractModelNameFromPath(string pathForModelFile)
+    {
+      Regex regex = new Regex(@"[\w-]+(?:\.\w+)*$");
+      return regex.Match(pathForModelFile).Value;
     }
   }
 }
