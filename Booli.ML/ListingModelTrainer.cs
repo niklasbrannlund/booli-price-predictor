@@ -70,34 +70,8 @@ namespace Booli.ML
       var metrics = _mlContext.Regression.CrossValidate(data: dataView, estimator: pipeline, numFolds: 4, labelColumn: "Label");
 
       PrintRegressionFoldsAverageMetrics(metrics);
-      //PrintFeatureImportanceValues(dataView);
 
       return model;
-    }
-
-    public void EvaluateCurrentListings()
-    {
-
-      
-      //PreProcessData(currentListings);
-    }
-
-    private void PreProcessData(IList<Listing> currentListings)
-    {
-      if (currentListings.Any(x => x.HasMissingConstructionYear()))
-      {
-        var listingsWithoutConstructionYear = currentListings.Where(x => x.HasMissingConstructionYear());
-        CopyConstructionYearFromListingOnSameAddress(currentListings, listingsWithoutConstructionYear);
-      }
-
-    }
-
-    private static void CopyConstructionYearFromListingOnSameAddress(IList<Listing> currentListings, IEnumerable<Listing> listingsWithoutConstructionYear)
-    {
-      foreach (var brokenListing in listingsWithoutConstructionYear)
-      {
-        brokenListing.ConstructionYear = currentListings.FirstOrDefault(x => x.HasValidConstructionYear(brokenListing)).ConstructionYear;                 
-      }
     }
 
     private void SaveModelAsFile(ITransformer model)
@@ -154,14 +128,5 @@ namespace Booli.ML
         Console.WriteLine($"{featureColumnNames[feature.index],-20}|\t{feature.RSquared.Mean:F6}");
       }
     }
-
-    //private async Task<IList<SoldListing>> FetchTrainingDataAsync(string area)
-    //{
-    //  // retrieve the data
-    //  var soldResult = await _client.GetSoldItemsAsync(area);
-    //  var soldListings = soldResult.SoldListings;
-    //  return soldListings;
-    //}
   }
-  
 }
