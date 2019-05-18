@@ -9,7 +9,7 @@ using Moq;
 namespace Booli.ML.Test
 {
   [TestClass]
-  public class ModelTrainerTest
+  public class ListingModelTrainerTest
   {
     private IAPIClient _client;
 
