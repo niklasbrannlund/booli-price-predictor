@@ -16,38 +16,33 @@ using System.Collections.Immutable;
 
 namespace Booli.ML
 {
-  public class ModelTrainer
+  public class ListingModelTrainer
   {
     private MLContext _mlContext;
-    private readonly IAPIClient _client;
-    private string _modelPath;
-    private readonly string _area;
-    public ModelTrainer(IAPIClient client, string area)
+
+    public string ModelPath { get; private set; }
+
+    private IList<SoldListing> _listingDataForTraining;
+
+    public ListingModelTrainer(IList<SoldListing> listingDataForTraining)
     {
+      _listingDataForTraining = listingDataForTraining;
       _mlContext = new MLContext();
-      _client = client;
-      _area = area;
-      _modelPath = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}.zip");
+      ModelPath = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}.zip");
     }
 
     /// <summary>
     /// Train and save model for predicting housing prices
     /// </summary>
     /// <param name="area">area for which the model should be trained on</param>
-    public void GetTrainingDataAndTrainModel()
+    public void TrainAndSaveModel()
     {
-      if (!File.Exists(_modelPath))
+      if (!File.Exists(ModelPath))
       {
-        var currentListings = GetDataForTraining().Result;
         var pipeline = ConstructPipelineForTraining();
-        var model = TrainModelAndPrintMetrics(pipeline, currentListings);
+        var model = TrainModelAndPrintMetrics(pipeline, _listingDataForTraining);
         SaveModelAsFile(model);
       }
-    }
-    private async Task<IList<SoldListing>> GetDataForTraining()
-    {
-      var soldItems = await _client.GetSoldItemsAsync(_area);
-      return soldItems.SoldListings;
     }
 
     private EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.LinearRegressionModelParameters>> ConstructPipelineForTraining()
@@ -82,21 +77,9 @@ namespace Booli.ML
 
     public void EvaluateCurrentListings()
     {
-      var request = _client.GetListingsAsync(_area);
-      request.Wait();
-      var currentListings = request.Result.CurrentListings;
+
       
-      PreProcessData(currentListings);
-
-      ITransformer trainedModel;
-      using (var stream = File.OpenRead(_modelPath))
-      {
-        trainedModel = _mlContext.Model.Load(stream);
-      }
-
-      var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(trainedModel);
-      PrintPrediction(predEngine, currentListings);
-
+      //PreProcessData(currentListings);
     }
 
     private void PreProcessData(IList<Listing> currentListings)
@@ -117,33 +100,9 @@ namespace Booli.ML
       }
     }
 
-    private void PrintPrediction(PredictionEngine<Listing, ListingPrediction> predictionEngine, IList<Listing> currentListings)
-    {
-
-      Console.WriteLine($"*************************************************************************************************************");
-      Console.WriteLine($"*       Predictions for housing prices in {_area}      ");
-      Console.WriteLine($"*------------------------------------------------------------------------------------------------------------\r\n\r\n");
-
-      foreach (var listing in currentListings)
-      {
-        var pred = predictionEngine.Predict(listing);
-        Console.WriteLine($"*       Address:                     {listing.Location.Address.StreetAddress} ");
-        Console.WriteLine($"*       Type:                        {listing.ObjectType} ");
-        Console.WriteLine($"*       Listing price:               {listing.ListPrice} ");
-        Console.WriteLine($"*       Living area:                 {listing.LivingArea} m^2");
-        Console.WriteLine($"*       Additional area:             {listing.AdditionalArea} m^2");
-        Console.WriteLine($"*       Rooms:                       {listing.Rooms}");
-        Console.WriteLine($"*       Floor:                       {listing.Floor}");
-        Console.WriteLine($"*       Rent:                        {listing.Rent}");
-        Console.WriteLine($"*       Construction year:           {listing.ConstructionYear}");
-        Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {pred.Score}");
-        Console.WriteLine($"*************************************************************************************************************\r\n");
-      }
-    }
-
     private void SaveModelAsFile(ITransformer model)
     {
-      using (var fileStream = new FileStream(_modelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
+      using (var fileStream = new FileStream(ModelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
         _mlContext.Model.Save(model, fileStream);
     }
 
@@ -196,19 +155,13 @@ namespace Booli.ML
       }
     }
 
-    private async Task<IList<SoldListing>> FetchTrainingDataAsync(string area)
-    {
-      // retrieve the data
-      var soldResult = await _client.GetSoldItemsAsync(area);
-      var soldListings = soldResult.SoldListings;
-      return soldListings;
-    }
+    //private async Task<IList<SoldListing>> FetchTrainingDataAsync(string area)
+    //{
+    //  // retrieve the data
+    //  var soldResult = await _client.GetSoldItemsAsync(area);
+    //  var soldListings = soldResult.SoldListings;
+    //  return soldListings;
+    //}
   }
-
-  public class ListingPrediction
-  {
-    public float Score;
-  }
-
   
 }

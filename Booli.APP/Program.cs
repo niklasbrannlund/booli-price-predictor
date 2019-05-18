@@ -11,13 +11,17 @@ namespace Booli.APP
 {
   class Program
   {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
       var client = new BooliApiClient(ConfigurationManager.AppSettings["ApiKey"], ConfigurationManager.AppSettings["CallerId"]);
-      
-      ModelTrainer model = new ModelTrainer(client, "svedmyra");
-      model.GetTrainingDataAndTrainModel();
-      model.EvaluateCurrentListings();
+
+      var listingsForTraining = await client.GetSoldItemsAsync("svedmyra");
+      ListingModelTrainer trainer = new ListingModelTrainer(listingsForTraining.SoldListings);
+      trainer.TrainAndSaveModel();
+
+      var listingtToPredict = await client.GetListingsAsync("svedmyra");
+      ListingModelPredictor predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, trainer.ModelPath);
+      predictor.PredictListings();
     }
   }
 }

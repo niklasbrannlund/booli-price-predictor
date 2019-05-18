@@ -120,7 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataViewExtension.cs" />
-    <Compile Include="ModelTrainer.cs" />
+    <Compile Include="ListingModelPredictor.cs" />
+    <Compile Include="ListingModelTrainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
