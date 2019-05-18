@@ -1,4 +1,5 @@
-﻿using BooliAPI.Models;
+﻿using Booli.ML.Interfaces;
+using BooliAPI.Models;
 using Microsoft.ML;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace Booli.ML
 {
-  public class ListingModelPredictor
+  public class ListingModelPredictor : IPredictor
   {
 
     private MLContext _mlContext;
     private IList<Listing> _listingsToPredict;
     private string _modelPath;
+    private ITransformer _trainedModel;
 
     public ListingModelPredictor(IList<Listing> listingsToPredict, string modelPath)
     {
@@ -25,25 +27,20 @@ namespace Booli.ML
 
     public void PredictListings()
     {
-      ITransformer trainedModel;
-      using (var stream = File.OpenRead(_modelPath))
-      {
-        trainedModel = _mlContext.Model.Load(stream);
-      }
-
-      var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(trainedModel);
-      PrintPrediction(predEngine, _listingsToPredict);
+      LoadModel();
+      var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(_trainedModel);
+      PrintPrediction(predEngine);
 
     }
 
-    private void PrintPrediction(PredictionEngine<Listing, ListingPrediction> predictionEngine, IList<Listing> currentListings)
+    private void PrintPrediction(PredictionEngine<Listing, ListingPrediction> predictionEngine)
     {
 
       Console.WriteLine($"*************************************************************************************************************");
       Console.WriteLine($"*       Predictions for housing prices      ");
       Console.WriteLine($"*------------------------------------------------------------------------------------------------------------\r\n\r\n");
 
-      foreach (var listing in currentListings)
+      foreach (var listing in _listingsToPredict)
       {
         var pred = predictionEngine.Predict(listing);
         Console.WriteLine($"*       Address:                     {listing.Location.Address.StreetAddress} ");
@@ -75,6 +72,14 @@ namespace Booli.ML
       foreach (var brokenListing in listingsWithoutConstructionYear)
       {
         brokenListing.ConstructionYear = currentListings.FirstOrDefault(x => x.HasValidConstructionYear(brokenListing)).ConstructionYear;
+      }
+    }
+
+    public void LoadModel()
+    {
+      using (var stream = File.OpenRead(_modelPath))
+      {
+        _trainedModel = _mlContext.Model.Load(stream);
       }
     }
   }
