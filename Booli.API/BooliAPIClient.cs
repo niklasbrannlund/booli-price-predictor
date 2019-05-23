@@ -26,37 +26,29 @@ namespace Booli.API
       _callerId = callerId;
     }
 
-    public async Task<Sold> GetSoldItemsAsync(string area)
+    public Sold GetSoldItemsAsync(string area)
     {
-      string result = "";
       var soldUrl = _baseUrl + $"/sold?q={area}" + CreateAuthentication();
-      Sold parsedObject = null;
-      try
-      {
-        using (var client = new HttpClient() { Timeout = TimeSpan.FromMilliseconds(500) })
-        {
-          result = await client.GetStringAsync(soldUrl);
-          parsedObject = JsonConvert.DeserializeObject<Sold>(result);
-        }
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine($"Exception caught: {ex.Message}");
-      }
-      return parsedObject;
+      return MakeRequestAsync<Sold>(soldUrl).Result;
     }
 
-    public async Task<Listings> GetListingsAsync(string area)
+    public Listings GetListingsAsync(string area)
+    {
+      var listingUrl = _baseUrl + $"/listings?q={area}" + CreateAuthentication();
+      return MakeRequestAsync<Listings>(listingUrl).Result;
+    }
+
+
+    private async Task<T> MakeRequestAsync<T>(string url)
     {
       string result = "";
-      var listingUrl = _baseUrl + $"/listings?q={area}" + CreateAuthentication();
-      Listings parsedObject = null;
+      T parsedObject = default;
       try
       {
         using (var client = new HttpClient() { Timeout = TimeSpan.FromMilliseconds(500) })
         {
-          result = await client.GetStringAsync(listingUrl);
-          parsedObject = JsonConvert.DeserializeObject<Listings>(result);
+          result = await client.GetStringAsync(url);
+          parsedObject = JsonConvert.DeserializeObject<T>(result);
         }
       }
       catch (Exception ex)

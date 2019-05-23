@@ -9,7 +9,7 @@ namespace BooliAPI
 {
   public interface IAPIClient
   {
-    Task<Sold> GetSoldItemsAsync(string area);
-    Task<Listings> GetListingsAsync(string area);
+    Sold GetSoldItemsAsync(string area);
+    Listings GetListingsAsync(string area);
   }
 }
