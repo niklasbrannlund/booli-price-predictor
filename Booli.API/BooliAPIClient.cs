@@ -16,20 +16,20 @@ namespace Booli.API
   /// </summary>
   public class BooliApiClient : IAPIClient
   {
-    private string apiKey_;
-    private string callerId_;
-    protected const string baseUrl_ = "https://api.booli.se/";
+    private string _apiKey;
+    private string _callerId;
+    protected const string _baseUrl = "https://api.booli.se/";
 
     public BooliApiClient(string apikey, string callerId)
     {
-      apiKey_ = apikey;
-      callerId_ = callerId;
+      _apiKey = apikey;
+      _callerId = callerId;
     }
 
     public async Task<Sold> GetSoldItemsAsync(string area)
     {
       string result = "";
-      var soldUrl = baseUrl_ + $"/sold?q={area}" + CreateAuthentication();
+      var soldUrl = _baseUrl + $"/sold?q={area}" + CreateAuthentication();
       Sold parsedObject = null;
       try
       {
@@ -49,7 +49,7 @@ namespace Booli.API
     public async Task<Listings> GetListingsAsync(string area)
     {
       string result = "";
-      var listingUrl = baseUrl_ + $"/listings?q={area}" + CreateAuthentication();
+      var listingUrl = _baseUrl + $"/listings?q={area}" + CreateAuthentication();
       Listings parsedObject = null;
       try
       {
@@ -73,12 +73,12 @@ namespace Booli.API
       string result = "";
       using (var sha = new SHA1Managed())
       {
-        var input = Encoding.UTF8.GetBytes(callerId_ + time + apiKey_ + unique);
+        var input = Encoding.UTF8.GetBytes(_callerId + time + _apiKey + unique);
         var hash = sha.ComputeHash(input);
         result = string.Concat(hash.Select(b => b.ToString("x2")));
       }
 
-      return $"&limit=450&offset=0&callerId={callerId_}&time={time}&unique={unique}&hash={result}";
+      return $"&limit=450&offset=0&callerId={_callerId}&time={time}&unique={unique}&hash={result}";
     }
   }
 }
