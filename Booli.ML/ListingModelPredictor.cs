@@ -75,7 +75,7 @@ namespace Booli.ML
       }
     }
 
-    public void LoadModel()
+    private void LoadModel()
     {
       using (var stream = File.OpenRead(_modelPath))
       {

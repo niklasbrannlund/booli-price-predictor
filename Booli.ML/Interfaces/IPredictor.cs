@@ -9,6 +9,6 @@ namespace Booli.ML.Interfaces
 {
   public interface IPredictor
   {
-    void LoadModel();
+    void PredictListings();
   }
 }
