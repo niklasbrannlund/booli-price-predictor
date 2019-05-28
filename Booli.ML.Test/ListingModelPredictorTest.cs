@@ -1,4 +1,5 @@
-﻿using BooliAPI;
+﻿using Booli.ML.Interfaces;
+using BooliAPI;
 using BooliAPI.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -9,7 +10,8 @@ namespace Booli.ML.Test
   [TestClass]
   public class ListingModelPredictorTest
   {
-    private IAPIClient _client;
+    private Mock<IAPIClient> _apiClientMock;
+    private Mock<IRepository> _repositoryMock;
     private IList<Listing> _listingsToPredict;
 
     [TestInitialize]
@@ -34,14 +36,16 @@ namespace Booli.ML.Test
         }
       };
 
-      var apiClientMock = new Mock<IAPIClient>();
-      _client = apiClientMock.Object;
+      _apiClientMock = new Mock<IAPIClient>();
+
+      _repositoryMock = new Mock<IRepository>();
+
     }
 
     [TestMethod]
     public void CanConstruct()
     {
-      var predictor = new ListingModelPredictor(_listingsToPredict, null);
+      var predictor = new ListingModelPredictor(_listingsToPredict, _repositoryMock.Object, null);
       Assert.IsNotNull(predictor, "Construction of predictor failed ");
     }
   }

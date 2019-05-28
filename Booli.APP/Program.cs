@@ -19,8 +19,10 @@ namespace Booli.APP
       ListingModelTrainer trainer = new ListingModelTrainer(listingsForTraining.SoldListings);
       trainer.TrainAndSaveModel();
 
+      var booliRepo = new BooliRepository();
+
       var listingtToPredict = client.GetListingsAsync("svedmyra");
-      ListingModelPredictor predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, trainer.ModelPath);
+      ListingModelPredictor predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, booliRepo, trainer.ModelPath);
       predictor.PredictListings();
     }
   }

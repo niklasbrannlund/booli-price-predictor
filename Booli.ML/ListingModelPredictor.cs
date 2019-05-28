@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Booli.ML
 {
@@ -17,23 +15,24 @@ namespace Booli.ML
     private IList<Listing> _listingsToPredict;
     private string _modelPath;
     private ITransformer _trainedModel;
+    private readonly IRepository _repository;
 
-    public ListingModelPredictor(IList<Listing> listingsToPredict, string modelPath)
+    public ListingModelPredictor(IList<Listing> listingsToPredict, IRepository repository, string modelPath)
     {
       _mlContext = new MLContext();
       _listingsToPredict = listingsToPredict;
       _modelPath = modelPath;
+      _repository = repository;
     }
 
     public void PredictListings()
     {
       LoadModel();
       var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(_trainedModel);
-      PrintPrediction(predEngine);
-
+      PrintPredictions(predEngine);
     }
 
-    private void PrintPrediction(PredictionEngine<Listing, ListingPrediction> predictionEngine)
+    private void PrintPredictions(PredictionEngine<Listing, ListingPrediction> predictionEngine)
     {
 
       Console.WriteLine($"*************************************************************************************************************");
