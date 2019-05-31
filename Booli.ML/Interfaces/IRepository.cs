@@ -10,6 +10,7 @@ namespace Booli.ML.Interfaces
   public interface IRepository
   {
     void SaveListing(Listing listing);
+    void SaveListings(IEnumerable<Listing> listings);
     void SavePrediction();
   }
 }
