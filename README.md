@@ -8,8 +8,8 @@ Uses the BooliAPI to gather data from historical sales
 ## Configuration
 Create a config-file named `privateappsettings.config` with the following data
 ```C#
-<configuration>
+<appSettings>
   <add key="ApiKey" value="YOUR-BOOLI-API-KEY" />
   <add key="CallerId" value="YOUR-BOOLI-CALLERID" />
-</configuration>
+</appSettings>
 ```
