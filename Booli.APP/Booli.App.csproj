@@ -76,9 +76,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="privateappsettings.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Booli.API\Booli.API.csproj">
