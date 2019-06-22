@@ -40,13 +40,13 @@ namespace Booli.ML.Test
     {
       // Arrange
       var modeltrainer = new ListingModelTrainer(_listingsForTraining);
-      var currentWeek = new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+      var currentMonth = DateTime.Today.Month;
       
       // Act
       var modelName = ExtractModelNameFromPath(modeltrainer.ModelPath);
 
       // Assert
-      Assert.AreEqual($"housing_prediction_model_{currentWeek}.zip", modelName, "Wrong model name");
+      Assert.AreEqual($"housing_prediction_model_{currentMonth}.zip", modelName, "Wrong model name");
     }
 
 

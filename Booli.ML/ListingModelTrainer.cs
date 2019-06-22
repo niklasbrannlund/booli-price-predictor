@@ -28,7 +28,7 @@ namespace Booli.ML
     {
       _listingDataForTraining = listingDataForTraining;
       _mlContext = new MLContext();
-      ModelPath = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{new GregorianCalendar().GetWeekOfYear(DateTime.Today, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}.zip");
+      ModelPath = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{DateTime.Today.Month}.zip");
     }
 
     /// <summary>

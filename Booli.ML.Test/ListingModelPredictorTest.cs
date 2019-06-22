@@ -37,7 +37,6 @@ namespace Booli.ML.Test
       };
 
       _apiClientMock = new Mock<IAPIClient>();
-
       _repositoryMock = new Mock<IRepository>();
 
     }
