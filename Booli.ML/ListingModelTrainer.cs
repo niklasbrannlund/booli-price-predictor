@@ -1,16 +1,11 @@
-﻿
-using BooliAPI;
-using BooliAPI.Models;
+﻿using BooliAPI.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers.FastTree;
 using Microsoft.Data.DataView;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using static Microsoft.ML.TrainCatalogBase;
 using System.Collections.Immutable;
 
