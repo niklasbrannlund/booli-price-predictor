@@ -78,7 +78,7 @@ namespace Booli.ML
     {
       using (var stream = File.OpenRead(_modelPath))
       {
-        _trainedModel = _mlContext.Model.Load(stream);
+        _trainedModel = _mlContext.Model.Load(stream, out var inputSchema);
       }
     }
   }
