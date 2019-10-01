@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static Microsoft.ML.TrainCatalogBase;
-using System.Collections.Immutable;
 
 namespace Booli.ML
 {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using BooliAPI;
 using BooliAPI.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
