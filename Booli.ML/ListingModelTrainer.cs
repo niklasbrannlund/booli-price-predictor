@@ -39,9 +39,9 @@ namespace Booli.ML
       }
     }
 
-    private EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.LinearRegressionModelParameters>> ConstructPipelineForTraining()
+    private EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.FastTree.FastTreeRegressionModelParameters>> ConstructPipelineForTraining()
     {
-      var trainer = _mlContext.Regression.Trainers.Sdca();
+      var trainer = _mlContext.Regression.Trainers.FastTree();
       var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures",nameof(SoldListing.ListPrice),
                                                                                              nameof(SoldListing.LivingArea),
                                                                                              nameof(SoldListing.AdditionalArea),
@@ -50,19 +50,22 @@ namespace Booli.ML
                                                                                              nameof(SoldListing.Rent),
                                                                                              nameof(SoldListing.Floor),
                                                                                              nameof(SoldListing.SoldYear))
-                                         //.Append(_mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
-                                         .Append(_mlContext.Transforms.Concatenate("Features", "NumericalFeatures"))
+                                         .Append(_mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
+                                         .Append(_mlContext.Transforms.Concatenate("Features", "NumericalFeatures", "CategoricalFeatures"))
                                          .Append(trainer);
 
       return pipeline;
     }
 
-    private (ITransformer model, DataViewSchema inputSchema) TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.LinearRegressionModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
+    private (ITransformer model, DataViewSchema inputSchema) TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.FastTree.FastTreeRegressionModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
     {
       var dataView = _mlContext.Data.LoadFromEnumerable(houseDataForTraining);
-      var model = pipeline.Fit(dataView);
-      var metrics = _mlContext.Regression.CrossValidate(data: dataView, estimator: pipeline, numberOfFolds: 4, labelColumnName: "Label");
-
+      var split = _mlContext.Data.TrainTestSplit(dataView);
+      var model = pipeline.Fit(split.TrainSet);
+      
+      
+      var predictions = model.Transform(split.TestSet);
+      var metrics = _mlContext.Regression.Evaluate(predictions);
       PrintRegressionFoldsAverageMetrics(metrics);
 
       return (model, dataView.Schema);
@@ -74,18 +77,18 @@ namespace Booli.ML
         _mlContext.Model.Save(model, schema, fileStream);
     }
 
-    private static void PrintRegressionFoldsAverageMetrics(IReadOnlyList<CrossValidationResult<RegressionMetrics>> crossValidationResults)
+    private static void PrintRegressionFoldsAverageMetrics(RegressionMetrics metrics)
     {
-      var RMS = crossValidationResults.Select(r => r.Metrics.RootMeanSquaredError);
-      var lossFunction = crossValidationResults.Select(r => r.Metrics.LossFunction);
-      var R2 = crossValidationResults.Select(r => r.Metrics.RSquared);
+      var RMS = metrics.RootMeanSquaredError;
+      var lossFunction = metrics.LossFunction;
+      var R2 = metrics.RSquared;
 
       Console.WriteLine($"*************************************************************************************************************");
       Console.WriteLine($"*       Metrics for Regression model      ");
       Console.WriteLine($"*------------------------------------------------------------------------------------------------------------");
-      Console.WriteLine($"*       Average RMS:          {RMS.Average():0.###}  ");
-      Console.WriteLine($"*       Average Loss Function: {lossFunction.Average():0.###}  ");
-      Console.WriteLine($"*       Average R-squared: {R2.Average():0.###}  ");
+      Console.WriteLine($"*       Average RMS:          {RMS:0.###}  ");
+      Console.WriteLine($"*       Average Loss Function: {lossFunction:0.###}  ");
+      Console.WriteLine($"*       Average R-squared: {R2:0.###}  ");
       Console.WriteLine($"*************************************************************************************************************");
     }
   }
