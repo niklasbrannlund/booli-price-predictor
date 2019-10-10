@@ -51,7 +51,7 @@ namespace Booli.ML
         Console.WriteLine($"*       Floor:                       {listing.Floor}");
         Console.WriteLine($"*       Rent:                        {listing.Rent}");
         Console.WriteLine($"*       Construction year:           {listing.ConstructionYear}");
-        Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {pred.Score}");
+        Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {pred.SoldPrice}");
         Console.WriteLine($"*************************************************************************************************************\r\n");
       }
     }
@@ -81,9 +81,5 @@ namespace Booli.ML
         _trainedModel = _mlContext.Model.Load(stream, out var inputSchema);
       }
     }
-  }
-  public class ListingPrediction
-  {
-    public float Score;
   }
 }
