@@ -10,7 +10,7 @@ namespace Booli.ML
   public class BooliRepository : IRepository
   {
 
-    private readonly string listingsDBPath = Path.Combine(Environment.CurrentDirectory, $"../Data/");
+    private readonly string listingsDBPath = Path.Combine(Environment.CurrentDirectory, $"/Data/");
 
     public void SaveListing(Listing listing)
     {
@@ -28,10 +28,12 @@ namespace Booli.ML
       }
     }
 
-
-    public void SavePrediction()
+    public void SavePrediction(ListingPrediction prediction)
     {
-      throw new NotImplementedException();
+      using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))
+      {
+        db.GetCollection<ListingPrediction>().Insert(prediction);
+      }
     }
   }
 }

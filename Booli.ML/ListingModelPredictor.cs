@@ -1,6 +1,8 @@
 ﻿using Booli.ML.Interfaces;
 using BooliAPI.Models;
+using LiteDB;
 using Microsoft.ML;
+using Microsoft.ML.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +32,17 @@ namespace Booli.ML
       LoadModel();
       var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(_trainedModel);
       PrintPredictions(predEngine);
+      SavePredictions(predEngine);
+    }
+
+    private void SavePredictions(PredictionEngine<Listing, ListingPrediction> predEngine)
+    {
+      foreach (var listing in _listingsToPredict)
+      {
+        var prediction = predEngine.Predict(listing);
+        prediction.BooliId = listing.BooliId;
+        _repository.SavePrediction(prediction);
+      }
     }
 
     private void PrintPredictions(PredictionEngine<Listing, ListingPrediction> predictionEngine)
@@ -64,4 +77,15 @@ namespace Booli.ML
       }
     }
   }
+<<<<<<< HEAD
+=======
+  public class ListingPrediction
+  {
+    [ColumnName("Score")]
+    public float Score;
+
+    [BsonId]
+    public int BooliId;
+  }
+>>>>>>> database-functionality
 }

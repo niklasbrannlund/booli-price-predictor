@@ -1,5 +1,6 @@
 ﻿using Booli.API;
 using Booli.ML;
+using Booli.ML.Interfaces;
 using System.Configuration;
 
 namespace Booli.APP
