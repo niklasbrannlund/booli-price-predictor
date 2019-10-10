@@ -123,8 +123,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BooliAPIClient.cs" />
-    <Compile Include="Models\BooliAPIModels.cs" />
+    <Compile Include="Models\Address.cs" />
     <Compile Include="IAPIClient.cs" />
+    <Compile Include="Models\Distance.cs" />
+    <Compile Include="Models\Listing.cs" />
+    <Compile Include="Models\Listings.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Position.cs" />
+    <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\SearchParams.cs" />
+    <Compile Include="Models\Sold.cs" />
+    <Compile Include="Models\SoldListing.cs" />
+    <Compile Include="Models\Source.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
