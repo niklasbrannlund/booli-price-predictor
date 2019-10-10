@@ -1,5 +1,6 @@
 ﻿using Booli.API;
 using Booli.ML;
+using Booli.ML.Interfaces;
 using System.Configuration;
 
 namespace Booli.APP
@@ -17,7 +18,7 @@ namespace Booli.APP
       var booliRepo = new BooliRepository();
 
       var listingtToPredict = client.GetListingsAsync("svedmyra");
-      ListingModelPredictor predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, booliRepo, trainer.ModelPath);
+      var predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, booliRepo, trainer.ModelPath);
       predictor.PredictListings();
     }
   }

@@ -11,6 +11,6 @@ namespace Booli.ML.Interfaces
   {
     void SaveListing(Listing listing);
     void SaveListings(IEnumerable<Listing> listings);
-    void SavePrediction();
+    void SavePrediction(ListingPrediction prediction);
   }
 }
