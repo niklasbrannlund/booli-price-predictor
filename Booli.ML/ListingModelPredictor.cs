@@ -56,24 +56,6 @@ namespace Booli.ML
       }
     }
 
-    private void PreProcessData(IList<Listing> currentListings)
-    {
-      if (currentListings.Any(x => x.HasMissingConstructionYear()))
-      {
-        var listingsWithoutConstructionYear = currentListings.Where(x => x.HasMissingConstructionYear());
-        CopyConstructionYearFromListingOnSameAddress(currentListings, listingsWithoutConstructionYear);
-      }
-
-    }
-
-    private static void CopyConstructionYearFromListingOnSameAddress(IList<Listing> currentListings, IEnumerable<Listing> listingsWithoutConstructionYear)
-    {
-      foreach (var brokenListing in listingsWithoutConstructionYear)
-      {
-        brokenListing.ConstructionYear = currentListings.FirstOrDefault(x => x.HasValidConstructionYear(brokenListing)).ConstructionYear;
-      }
-    }
-
     private void LoadModel()
     {
       using (var stream = File.OpenRead(_modelPath))

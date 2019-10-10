@@ -11,13 +11,13 @@ namespace Booli.APP
       var client = new BooliApiClient(ConfigurationManager.AppSettings["ApiKey"], ConfigurationManager.AppSettings["CallerId"]);
 
       var listingsForTraining = client.GetSoldItemsAsync("svedmyra");
-      ListingModelTrainer trainer = new ListingModelTrainer(listingsForTraining.SoldListings);
+      var trainer = new ListingModelTrainer(listingsForTraining.SoldListings);
       trainer.TrainAndSaveModel();
 
       var booliRepo = new BooliRepository();
 
       var listingtToPredict = client.GetListingsAsync("svedmyra");
-      ListingModelPredictor predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, booliRepo, trainer.ModelPath);
+      var predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, booliRepo, trainer.ModelPath);
       predictor.PredictListings();
     }
   }

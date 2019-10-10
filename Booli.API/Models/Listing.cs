@@ -65,11 +65,6 @@ namespace BooliAPI.Models
 
     [JsonProperty("rent")]
     public float Rent { get; set; }
-
-    public bool HasMissingConstructionYear() => ConstructionYear == 0;
-
-    public bool HasValidConstructionYear(Listing brokenListing) => this.ConstructionYear > 0 && Regex.Replace(brokenListing.Location.Address.StreetAddress, @"[\d-]", string.Empty) ==
-                                                                                         Regex.Replace(this.Location.Address.StreetAddress, @"[\d-]", string.Empty);
   }
 
   public class ListingPrediction
