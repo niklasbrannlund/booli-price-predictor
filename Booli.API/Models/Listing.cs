@@ -66,10 +66,4 @@ namespace BooliAPI.Models
     [JsonProperty("rent")]
     public float Rent { get; set; }
   }
-
-  public class ListingPrediction
-  {
-    [ColumnName("Score")]
-    public float SoldPrice;
-  }
 }

@@ -6,7 +6,6 @@ using Microsoft.ML.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Booli.ML
 {
@@ -54,7 +53,7 @@ namespace Booli.ML
 
       foreach (var listing in _listingsToPredict)
       {
-        var pred = predictionEngine.Predict(listing);
+        var prediction = predictionEngine.Predict(listing);
         Console.WriteLine($"*       Address:                     {listing.Location.Address.StreetAddress} ");
         Console.WriteLine($"*       Type:                        {listing.ObjectType} ");
         Console.WriteLine($"*       Listing price:               {listing.ListPrice} ");
@@ -64,7 +63,7 @@ namespace Booli.ML
         Console.WriteLine($"*       Floor:                       {listing.Floor}");
         Console.WriteLine($"*       Rent:                        {listing.Rent}");
         Console.WriteLine($"*       Construction year:           {listing.ConstructionYear}");
-        Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {pred.SoldPrice}");
+        Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {prediction.SoldPrice}");
         Console.WriteLine($"*************************************************************************************************************\r\n");
       }
     }
@@ -77,15 +76,13 @@ namespace Booli.ML
       }
     }
   }
-<<<<<<< HEAD
-=======
+
   public class ListingPrediction
   {
     [ColumnName("Score")]
-    public float Score;
+    public float SoldPrice;
 
     [BsonId]
-    public int BooliId;
+    public int BooliId { get; set; }
   }
->>>>>>> database-functionality
 }
