@@ -135,6 +135,7 @@
     <Compile Include="DataViewExtension.cs" />
     <Compile Include="Interfaces\IPredictor.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\ITrainer.cs" />
     <Compile Include="ListingModelPredictor.cs" />
     <Compile Include="ListingModelTrainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

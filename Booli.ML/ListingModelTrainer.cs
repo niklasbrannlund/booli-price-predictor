@@ -1,4 +1,5 @@
-﻿using BooliAPI.Models;
+﻿using Booli.ML.Interfaces;
+using BooliAPI.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace Booli.ML
 {
-  public class ListingModelTrainer
+  public class ListingModelTrainer : ITrainer
   {
     private MLContext _mlContext;
 
@@ -27,7 +28,7 @@ namespace Booli.ML
     /// Train and save model for predicting housing prices
     /// </summary>
     /// <param name="area">area for which the model should be trained on</param>
-    public void TrainAndSaveModel()
+    public void TrainModel()
     {
       if (!File.Exists(ModelPath))
       {

@@ -13,7 +13,7 @@ namespace Booli.APP
 
       var listingsForTraining = client.GetSoldItemsAsync("svedmyra");
       var trainer = new ListingModelTrainer(listingsForTraining.SoldListings);
-      trainer.TrainAndSaveModel();
+      trainer.TrainModel();
 
       var booliRepo = new BooliRepository();
 
