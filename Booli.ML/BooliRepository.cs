@@ -27,12 +27,13 @@ namespace Booli.ML
         db.GetCollection<Listing>("listings").Insert(listings);
       }
     }
+    
 
     public void SavePrediction(ListingPrediction prediction)
     {
       using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))
       {
-        db.GetCollection<ListingPrediction>().Insert(prediction);
+        db.GetCollection<ListingPrediction>().Upsert(prediction);
       }
     }
   }
