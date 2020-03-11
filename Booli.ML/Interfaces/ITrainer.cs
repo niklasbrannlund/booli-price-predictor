@@ -8,6 +8,7 @@ namespace Booli.ML.Interfaces
 {
   public interface ITrainer
   {
+    string ModelPath { get; }
     void TrainModel();
   }
 }

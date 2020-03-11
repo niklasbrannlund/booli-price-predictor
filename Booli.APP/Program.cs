@@ -1,7 +1,11 @@
 ﻿using Booli.API;
 using Booli.ML;
 using Booli.ML.Interfaces;
+using BooliAPI;
+using Autofac;
 using System.Configuration;
+using BooliAPI.Models;
+using System.Collections.Generic;
 
 namespace Booli.APP
 {
@@ -9,17 +13,25 @@ namespace Booli.APP
   {
     static void Main(string[] args)
     {
-      var client = new BooliApiClient(ConfigurationManager.AppSettings["ApiKey"], ConfigurationManager.AppSettings["CallerId"]);
+      using (var scope = DependencyInjection.BuildDependencies())
+      {
+        var apiClient = scope.Resolve<IAPIClient>();
 
-      var listingsForTraining = client.GetSoldItemsAsync("svedmyra");
-      var trainer = new ListingModelTrainer(listingsForTraining.SoldListings);
-      trainer.TrainModel();
+        var soldListingsResponse = apiClient.GetSoldItemsAsync("svedmyra");
+        var trainer = scope.Resolve<ITrainer>(new TypedParameter(typeof(IList<SoldListing>), soldListingsResponse.SoldListings));
+        trainer.TrainModel();
 
-      var booliRepo = new BooliRepository();
+        var repo = scope.Resolve<IRepository>();
 
-      var listingtToPredict = client.GetListingsAsync("svedmyra");
-      var predictor = new ListingModelPredictor(listingtToPredict.CurrentListings, booliRepo, trainer.ModelPath);
-      predictor.PredictListings();
+        var listingsToPredict = apiClient.GetListingsAsync("svedmyra");
+
+        var predictor = scope.Resolve<IPredictor>(new TypedParameter(typeof(IList<Listing>), listingsToPredict.CurrentListings),
+                                                  new TypedParameter(typeof(IRepository), repo),
+                                                  new TypedParameter(typeof(string), trainer.ModelPath));
+
+        predictor.PredictListings();
+
+      }
     }
   }
 }
