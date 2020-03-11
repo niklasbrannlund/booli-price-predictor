@@ -17,13 +17,14 @@ namespace Booli.APP
       {
         var apiClient = scope.Resolve<IAPIClient>();
 
-        var soldListingsResponse = apiClient.GetSoldItemsAsync("svedmyra");
+        const string area = "svedmyra";
+        var soldListingsResponse = apiClient.GetSoldItemsAsync(area);
         var trainer = scope.Resolve<ITrainer>(new TypedParameter(typeof(IList<SoldListing>), soldListingsResponse.SoldListings));
         trainer.TrainModel();
 
         var repo = scope.Resolve<IRepository>();
 
-        var listingsToPredict = apiClient.GetListingsAsync("svedmyra");
+        var listingsToPredict = apiClient.GetListingsAsync(area);
 
         var predictor = scope.Resolve<IPredictor>(new TypedParameter(typeof(IList<Listing>), listingsToPredict.CurrentListings),
                                                   new TypedParameter(typeof(IRepository), repo),
