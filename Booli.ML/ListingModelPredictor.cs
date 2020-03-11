@@ -80,7 +80,7 @@ namespace Booli.ML
   public class ListingPrediction
   {
     [ColumnName("Score")]
-    public float SoldPrice;
+    public float SoldPrice { get; set; }
 
     [BsonId]
     public int BooliId { get; set; }
