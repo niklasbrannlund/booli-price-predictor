@@ -35,5 +35,13 @@ namespace Booli.ML
         db.GetCollection<ListingPrediction>().Upsert(prediction);
       }
     }
+
+    public ListingPrediction GetPredictionById(int id)
+    {
+      using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))
+      {
+        return db.GetCollection<ListingPrediction>().FindById(new BsonValue(id));
+      }
+    }
   }
 }
