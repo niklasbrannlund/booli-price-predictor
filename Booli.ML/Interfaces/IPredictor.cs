@@ -9,6 +9,7 @@ namespace Booli.ML.Interfaces
 {
   public interface IPredictor
   {
-    void PredictListings();
+    void CreatePredictionEngine();
+    void SavePredictions();
   }
 }

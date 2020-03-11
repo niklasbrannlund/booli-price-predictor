@@ -17,6 +17,7 @@ namespace Booli.ML
     private string _modelPath;
     private ITransformer _trainedModel;
     private readonly IRepository _repository;
+    private PredictionEngine<Listing, ListingPrediction> _predEngine;
 
     public ListingModelPredictor(IList<Listing> listingsToPredict, IRepository repository, string modelPath)
     {
@@ -26,19 +27,18 @@ namespace Booli.ML
       _repository = repository;
     }
 
-    public void PredictListings()
+    public void CreatePredictionEngine()
     {
       LoadModel();
-      var predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(_trainedModel);
-      PrintPredictions(predEngine);
-      SavePredictions(predEngine);
+      _predEngine = _mlContext.Model.CreatePredictionEngine<Listing, ListingPrediction>(_trainedModel);
+      PrintPredictions(_predEngine);
     }
 
-    private void SavePredictions(PredictionEngine<Listing, ListingPrediction> predEngine)
+    public void SavePredictions()
     {
       foreach (var listing in _listingsToPredict)
       {
-        var prediction = predEngine.Predict(listing);
+        var prediction = _predEngine.Predict(listing);
         prediction.BooliId = listing.BooliId;
         _repository.SavePrediction(prediction);
       }

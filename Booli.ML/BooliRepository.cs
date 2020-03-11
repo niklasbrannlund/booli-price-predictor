@@ -28,7 +28,6 @@ namespace Booli.ML
       }
     }
     
-
     public void SavePrediction(ListingPrediction prediction)
     {
       using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))

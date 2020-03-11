@@ -23,14 +23,14 @@ namespace Booli.APP
         trainer.TrainModel();
 
         var repo = scope.Resolve<IRepository>();
-
         var listingsToPredict = apiClient.GetListingsAsync(area);
 
         var predictor = scope.Resolve<IPredictor>(new TypedParameter(typeof(IList<Listing>), listingsToPredict.CurrentListings),
                                                   new TypedParameter(typeof(IRepository), repo),
                                                   new TypedParameter(typeof(string), trainer.ModelPath));
 
-        predictor.PredictListings();
+        predictor.CreatePredictionEngine();
+        predictor.SavePredictions();
 
       }
     }
