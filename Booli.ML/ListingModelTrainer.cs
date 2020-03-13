@@ -72,6 +72,7 @@ namespace Booli.ML
 
     private void SaveModelAsFile(ITransformer model, DataViewSchema schema)
     {
+      Directory.CreateDirectory(Path.GetDirectoryName(ModelPath));
       using (var fileStream = new FileStream(ModelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
         _mlContext.Model.Save(model, schema, fileStream);
     }
