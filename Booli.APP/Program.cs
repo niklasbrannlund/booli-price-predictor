@@ -30,8 +30,8 @@ namespace Booli.APP
                                                   new TypedParameter(typeof(string), trainer.ModelPath));
 
         predictor.CreatePredictionEngine();
+        predictor.Predict();
         predictor.SavePredictions();
-
       }
     }
   }
