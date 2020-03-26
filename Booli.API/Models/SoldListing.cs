@@ -74,5 +74,8 @@ namespace BooliAPI.Models
     [NoColumn]
     [JsonProperty("apartmentNumber")]
     public string ApartmentNumber { get; set; }
+
+    [JsonProperty("plotArea")]
+    public float PlotArea { get; set; }
   }
 }
