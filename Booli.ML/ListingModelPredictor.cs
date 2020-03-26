@@ -6,6 +6,7 @@ using Microsoft.ML.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Booli.ML
 {
@@ -73,6 +74,8 @@ namespace Booli.ML
         Console.WriteLine($"*       Rooms:                       {listing.Rooms}");
         Console.WriteLine($"*       Floor:                       {listing.Floor}");
         Console.WriteLine($"*       Rent:                        {listing.Rent}");
+        if(listing.ObjectType == "Tomt/Mark")
+          Console.WriteLine($"*       PlotArea:                        {listing.PlotArea}");
         Console.WriteLine($"*       Construction year:           {listing.ConstructionYear}");
         Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {prediction.SoldPrice}");
         Console.WriteLine($"*************************************************************************************************************\r\n");

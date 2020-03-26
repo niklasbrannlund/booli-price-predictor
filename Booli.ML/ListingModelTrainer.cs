@@ -2,8 +2,10 @@
 using BooliAPI.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.ML.Trainers.FastTree;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -21,7 +23,7 @@ namespace Booli.ML
     {
       _listingDataForTraining = listingDataForTraining;
       _mlContext = new MLContext();
-      ModelPath = Path.Combine(Environment.CurrentDirectory, "Data", $"housing_prediction_model_{DateTime.Today.Month}.zip");
+      ModelPath = Path.Combine(Environment.CurrentDirectory, "Data/", $"model_{DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture)}.zip");
     }
 
     /// <summary>
@@ -38,31 +40,33 @@ namespace Booli.ML
       }
     }
 
-    private EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.FastTree.FastTreeRegressionModelParameters>> ConstructPipelineForTraining()
+    private IEstimator<ITransformer> ConstructPipelineForTraining()
     {
       var trainer = _mlContext.Regression.Trainers.FastTree();
-      var pipeline = _mlContext.Transforms.Concatenate(outputColumnName: "NumericalFeatures",nameof(SoldListing.ListPrice),
-                                                                                             nameof(SoldListing.LivingArea),
-                                                                                             nameof(SoldListing.AdditionalArea),
-                                                                                             nameof(SoldListing.Rooms),
-                                                                                             nameof(SoldListing.ConstructionYear),
-                                                                                             nameof(SoldListing.Rent),
-                                                                                             nameof(SoldListing.Floor),
-                                                                                             nameof(SoldListing.SoldYear))
-                                         .Append(_mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "CategoricalFeatures", nameof(SoldListing.ObjectType)))
-                                         .Append(_mlContext.Transforms.Concatenate("Features", "NumericalFeatures", "CategoricalFeatures"))
-                                         .Append(trainer);
+      var pipeline = _mlContext.Transforms
+        .Categorical.OneHotEncoding(outputColumnName: "ObjectTypeEncoded", inputColumnName: nameof(SoldListing.ObjectType))
+        .Append(_mlContext.Transforms.Concatenate("Features", "ObjectTypeEncoded",
+                                                              nameof(SoldListing.ListPrice),
+                                                              nameof(SoldListing.LivingArea),
+                                                              nameof(SoldListing.AdditionalArea),
+                                                              nameof(SoldListing.Rooms),
+                                                              nameof(SoldListing.ConstructionYear),
+                                                              nameof(SoldListing.Rent),
+                                                              nameof(SoldListing.Floor),
+                                                              nameof(SoldListing.SoldYear),
+                                                              nameof(SoldListing.PlotArea)))
+        .Append(trainer);
 
       return pipeline;
     }
 
-    private (ITransformer model, DataViewSchema inputSchema) TrainModelAndPrintMetrics(EstimatorChain<RegressionPredictionTransformer<Microsoft.ML.Trainers.FastTree.FastTreeRegressionModelParameters>> pipeline, IList<SoldListing> houseDataForTraining)
+    private (ITransformer model, DataViewSchema inputSchema) TrainModelAndPrintMetrics(IEstimator<ITransformer> pipeline, IList<SoldListing> houseDataForTraining)
     {
       var dataView = _mlContext.Data.LoadFromEnumerable(houseDataForTraining);
       var split = _mlContext.Data.TrainTestSplit(dataView);
       var model = pipeline.Fit(split.TrainSet);
       
-      
+
       var predictions = model.Transform(split.TestSet);
       var metrics = _mlContext.Regression.Evaluate(predictions);
       PrintRegressionFoldsAverageMetrics(metrics);
