@@ -138,6 +138,7 @@
     <Compile Include="Interfaces\ITrainer.cs" />
     <Compile Include="ListingModelPredictor.cs" />
     <Compile Include="ListingModelTrainer.cs" />
+    <Compile Include="ListingPrediction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
