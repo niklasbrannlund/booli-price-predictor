@@ -28,14 +28,29 @@ namespace Booli.API
 
     public IList<SoldListing> GetSoldItemsAsync(string area)
     {
-      var soldUrl = _baseUrl + $"/sold?q={area}" + CreateAuthentication();
-      return MakeRequestAsync<Sold>(soldUrl).Result.SoldListings;
+
+      var limit = 400;
+      var offset = 0;
+      var listings = new List<SoldListing>();
+      int totalNumOfListings = 0;
+      do
+      {
+        var soldUrl = _baseUrl + $"/sold?q={area}" + CreateAuthentication(limit, offset);
+        var result = MakeRequestAsync<Sold>(soldUrl).Result;
+        totalNumOfListings = result.TotalCount;
+        listings.AddRange(result.SoldListings);
+        offset += limit;
+      }
+      while (listings.Count < totalNumOfListings);
+      
+      return listings.ToList();
     }
 
     public IList<Listing> GetListingsAsync(string area)
     {
       var listingUrl = _baseUrl + $"/listings?q={area}" + CreateAuthentication();
-      return MakeRequestAsync<Listings>(listingUrl).Result.CurrentListings;
+      var result = MakeRequestAsync<Listings>(listingUrl).Result;
+      return result.CurrentListings.ToList();
     }
 
 
@@ -58,7 +73,7 @@ namespace Booli.API
       return parsedObject;
     }
 
-    private string CreateAuthentication()
+    private string CreateAuthentication(int limit = 400, int offset = 0)
     {
       var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
       var unique = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
@@ -70,7 +85,7 @@ namespace Booli.API
         result = string.Concat(hash.Select(b => b.ToString("x2")));
       }
 
-      return $"&limit=450&offset=0&callerId={_callerId}&time={time}&unique={unique}&hash={result}";
+      return $"&limit={limit}&offset={offset}&callerId={_callerId}&time={time}&unique={unique}&hash={result}";
     }
   }
 }
