@@ -1,10 +1,11 @@
 ﻿using BooliAPI.Models;
+using System.Collections.Generic;
 
 namespace BooliAPI
 {
   public interface IAPIClient
   {
-    Sold GetSoldItemsAsync(string area);
-    Listings GetListingsAsync(string area);
+    IList<SoldListing> GetSoldItemsAsync(string area);
+    IList<Listing> GetListingsAsync(string area);
   }
 }

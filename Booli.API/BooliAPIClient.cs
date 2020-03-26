@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -25,16 +26,16 @@ namespace Booli.API
       _callerId = callerId;
     }
 
-    public Sold GetSoldItemsAsync(string area)
+    public IList<SoldListing> GetSoldItemsAsync(string area)
     {
       var soldUrl = _baseUrl + $"/sold?q={area}" + CreateAuthentication();
-      return MakeRequestAsync<Sold>(soldUrl).Result;
+      return MakeRequestAsync<Sold>(soldUrl).Result.SoldListings;
     }
 
-    public Listings GetListingsAsync(string area)
+    public IList<Listing> GetListingsAsync(string area)
     {
       var listingUrl = _baseUrl + $"/listings?q={area}" + CreateAuthentication();
-      return MakeRequestAsync<Listings>(listingUrl).Result;
+      return MakeRequestAsync<Listings>(listingUrl).Result.CurrentListings;
     }
 
 
