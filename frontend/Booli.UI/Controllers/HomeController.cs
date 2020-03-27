@@ -1,23 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Booli.UI.Models;
+using BooliAPI.Models;
+using Booli.ML.Interfaces;
+using System.Linq;
 
 namespace Booli.UI.Controllers
 {
   public class HomeController : Controller
   {
+    private readonly IRepository _repo;
+
+    public HomeController(IRepository repo)
+    {
+      this._repo = repo;
+    }
+
     public IActionResult Index()
     {
-      return View();
+      var prediction = _repo.GetPredictions();
+      return View(prediction);
     }
 
     public IActionResult Privacy()
     {
-      return View();
+      return View();  
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

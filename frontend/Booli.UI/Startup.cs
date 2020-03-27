@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Booli.ML;
+using Booli.ML.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +33,7 @@ namespace Booli.UI
         options.MinimumSameSitePolicy = SameSiteMode.None;
       });
 
-
+      services.AddSingleton<IRepository, BooliRepository>();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
     }
 

@@ -1,8 +1,32 @@
-﻿@{
+﻿@model IEnumerable<BooliAPI.Models.Listing>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if(Model.Count() > 0)
+{
+<table border="1">
+    <tr style="">
+        <td><b>Typ</b></td>
+        <td><b>Adress</b></td>
+        <td><b>Utgångspris</b></td>
+        <td><b>Boyta</b></td>
+        <td><b>Rum</b></td>
+        <td><b>Hyra</b></td>
+        <td><b>Förutspått pris</b></td>
+    </tr>
+    @foreach (var listing in Model)
+    {
+      string style = listing.SoldPrice > listing.ListPrice ? "color:red" : "color:green";
+         <tr>
+             <td>@listing.ObjectType</td>
+             <td>@listing.Location.Address.StreetAddress</td>
+             <td>@listing.ListPrice</td>
+             <td>@listing.LivingArea</td>
+             <td>@listing.Rooms</td>
+             <td>@listing.Rent</td>
+             <td style="@style">@(Math.Round(listing.SoldPrice/10000)*10000)</td>        
+         </tr>
+    }
+</table>
+}
