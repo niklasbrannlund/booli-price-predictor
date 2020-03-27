@@ -28,19 +28,27 @@ namespace Booli.ML
       }
     }
     
-    public void SavePrediction(ListingPrediction prediction)
+    public void SavePrediction(Listing prediction)
     {
       using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))
       {
-        db.GetCollection<ListingPrediction>().Upsert(prediction);
+        db.GetCollection<Listing>().Upsert(prediction);
       }
     }
 
-    public ListingPrediction GetPredictionById(int id)
+    public Listing GetPredictionById(int id)
     {
       using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))
       {
-        return db.GetCollection<ListingPrediction>().FindById(new BsonValue(id));
+        return db.GetCollection<Listing>().FindById(new BsonValue(id));
+      }
+    }
+
+    public IEnumerable<Listing> GetPredictions()
+    {
+      using (var db = new LiteDatabase($@"{Directory.GetCurrentDirectory()}\Data\predictions.db"))
+      {
+        return db.GetCollection<Listing>().FindAll();
       }
     }
   }

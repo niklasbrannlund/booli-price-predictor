@@ -18,7 +18,7 @@ namespace Booli.APP
         var apiClient = scope.Resolve<IAPIClient>();
         var modelPath = Path.Combine(Environment.CurrentDirectory, "Data/", $"model_{DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture)}.zip");
         const string area = "Umeå";
-        if(!File.Exists(modelPath)) 
+        if(!File.Exists(modelPath))
         {
           var soldListings = apiClient.GetSoldItemsAsync(area);
           var trainer = scope.Resolve<ITrainer>(new TypedParameter(typeof(IList<SoldListing>), soldListings));

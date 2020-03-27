@@ -1,6 +1,7 @@
 ﻿using Microsoft.ML.Data;
 using Newtonsoft.Json;
 using System;
+using LiteDB;
 using System.Device.Location;
 using System.Text.RegularExpressions;
 
@@ -9,6 +10,7 @@ namespace BooliAPI.Models
   public class Listing
   {
     [NoColumn]
+    [BsonId]
     [JsonProperty("booliId")]
     public int BooliId { get; set; }
 
@@ -83,5 +85,8 @@ namespace BooliAPI.Models
 
     [JsonProperty("rent")]
     public float Rent { get; set; }
+
+    [ColumnName("Label")]
+    public float SoldPrice { get; set; }
   }
 }
