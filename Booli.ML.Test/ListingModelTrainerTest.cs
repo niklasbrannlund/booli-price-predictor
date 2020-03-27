@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using BooliAPI;
 using BooliAPI.Models;
@@ -38,13 +39,13 @@ namespace Booli.ML.Test
     {
       // Arrange
       var modeltrainer = new ListingModelTrainer(_listingsForTraining);
-      var currentMonth = DateTime.Today.Month;
-      
+      var currentMonth = DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
+
       // Act
       var modelName = ExtractModelNameFromPath(modeltrainer.ModelPath);
 
       // Assert
-      Assert.AreEqual($"housing_prediction_model_{currentMonth}.zip", modelName, "Wrong model name");
+      Assert.AreEqual($"model_{currentMonth}.zip", modelName, "Wrong model name");
     }
 
 
