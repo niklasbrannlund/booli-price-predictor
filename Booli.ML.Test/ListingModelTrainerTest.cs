@@ -33,26 +33,5 @@ namespace Booli.ML.Test
       // Assert
       Assert.IsNotNull(modeltrainer);
     }
-
-    [TestMethod]
-    public void VerifyCorrectNameOfModel()
-    {
-      // Arrange
-      var modeltrainer = new ListingModelTrainer(_listingsForTraining);
-      var currentMonth = DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
-
-      // Act
-      var modelName = ExtractModelNameFromPath(modeltrainer.ModelPath);
-
-      // Assert
-      Assert.AreEqual($"model_{currentMonth}.zip", modelName, "Wrong model name");
-    }
-
-
-    private string ExtractModelNameFromPath(string pathForModelFile)
-    {
-      Regex regex = new Regex(@"[\w-]+(?:\.\w+)*$");
-      return regex.Match(pathForModelFile).Value;
-    }
   }
 }

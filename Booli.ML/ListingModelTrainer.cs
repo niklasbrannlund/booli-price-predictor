@@ -14,16 +14,13 @@ namespace Booli.ML
   public class ListingModelTrainer : ITrainer
   {
     private MLContext _mlContext;
-
-    public string ModelPath { get; private set; }
-
     private IList<SoldListing> _listingDataForTraining;
+    private ITransformer _model;
 
     public ListingModelTrainer(IList<SoldListing> listingDataForTraining)
     {
       _listingDataForTraining = listingDataForTraining;
       _mlContext = new MLContext();
-      ModelPath = Path.Combine(Environment.CurrentDirectory, "Data/", $"model_{DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture)}.zip");
     }
 
     /// <summary>
@@ -32,12 +29,8 @@ namespace Booli.ML
     /// <param name="area">area for which the model should be trained on</param>
     public void TrainModel()
     {
-      if (!File.Exists(ModelPath))
-      {
-        var pipeline = ConstructPipelineForTraining();
-        var modelAndSchema = TrainModelAndPrintMetrics(pipeline, _listingDataForTraining);
-        SaveModelAsFile(modelAndSchema.model, modelAndSchema.inputSchema);
-      }
+      var pipeline = ConstructPipelineForTraining();
+      _model = TrainModelAndPrintMetrics(pipeline, _listingDataForTraining);
     }
 
     private IEstimator<ITransformer> ConstructPipelineForTraining()
@@ -60,7 +53,7 @@ namespace Booli.ML
       return pipeline;
     }
 
-    private (ITransformer model, DataViewSchema inputSchema) TrainModelAndPrintMetrics(IEstimator<ITransformer> pipeline, IList<SoldListing> houseDataForTraining)
+    private ITransformer TrainModelAndPrintMetrics(IEstimator<ITransformer> pipeline, IList<SoldListing> houseDataForTraining)
     {
       var dataView = _mlContext.Data.LoadFromEnumerable(houseDataForTraining);
       var split = _mlContext.Data.TrainTestSplit(dataView);
@@ -71,14 +64,14 @@ namespace Booli.ML
       var metrics = _mlContext.Regression.Evaluate(predictions);
       PrintRegressionFoldsAverageMetrics(metrics);
 
-      return (model, dataView.Schema);
+      return model;
     }
 
-    private void SaveModelAsFile(ITransformer model, DataViewSchema schema)
+    public void SaveModel(string modelPath)
     {
-      Directory.CreateDirectory(Path.GetDirectoryName(ModelPath));
-      using (var fileStream = new FileStream(ModelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
-        _mlContext.Model.Save(model, schema, fileStream);
+      Directory.CreateDirectory(Path.GetDirectoryName(modelPath));
+      using (var fileStream = new FileStream(modelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
+        _mlContext.Model.Save(_model, _mlContext.Data.LoadFromEnumerable(_listingDataForTraining).Schema, fileStream);
     }
 
     private static void PrintRegressionFoldsAverageMetrics(RegressionMetrics metrics)

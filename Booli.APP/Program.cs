@@ -23,6 +23,7 @@ namespace Booli.APP
           var soldListings = apiClient.GetSoldItemsAsync(area);
           var trainer = scope.Resolve<ITrainer>(new TypedParameter(typeof(IList<SoldListing>), soldListings));
           trainer.TrainModel();
+          trainer.SaveModel(modelPath);
         }
 
         var repo = scope.Resolve<IRepository>();
