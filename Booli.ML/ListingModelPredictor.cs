@@ -68,6 +68,7 @@ namespace Booli.ML
         var prediction = predictionEngine.Predict(listing);
         Console.WriteLine($"*       Address:                     {listing.Location.Address.StreetAddress} ");
         Console.WriteLine($"*       Type:                        {listing.ObjectType} ");
+        Console.WriteLine($"*       CityCentreDistance:          {listing.DistanceToCityCentre} km");
         Console.WriteLine($"*       Listing price:               {listing.ListPrice} ");
         Console.WriteLine($"*       Living area:                 {listing.LivingArea} m^2");
         Console.WriteLine($"*       Additional area:             {listing.AdditionalArea} m^2");
@@ -75,7 +76,7 @@ namespace Booli.ML
         Console.WriteLine($"*       Floor:                       {listing.Floor}");
         Console.WriteLine($"*       Rent:                        {listing.Rent}");
         if(listing.ObjectType == "Tomt/Mark")
-          Console.WriteLine($"*       PlotArea:                        {listing.PlotArea}");
+          Console.WriteLine($"*       PlotArea:                    {listing.PlotArea}");
         Console.WriteLine($"*       Construction year:           {listing.ConstructionYear}");
         Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {prediction.SoldPrice}");
         Console.WriteLine($"*************************************************************************************************************\r\n");

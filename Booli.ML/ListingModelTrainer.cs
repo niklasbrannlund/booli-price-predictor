@@ -40,6 +40,7 @@ namespace Booli.ML
         .Categorical.OneHotEncoding(outputColumnName: "ObjectTypeEncoded", inputColumnName: nameof(SoldListing.ObjectType))
         .Append(_mlContext.Transforms.Concatenate("Features", "ObjectTypeEncoded",
                                                               nameof(SoldListing.ListPrice),
+                                                              nameof(SoldListing.DistanceToCityCentre),
                                                               nameof(SoldListing.LivingArea),
                                                               nameof(SoldListing.AdditionalArea),
                                                               nameof(SoldListing.Rooms),

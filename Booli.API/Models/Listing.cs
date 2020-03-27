@@ -1,6 +1,7 @@
 ﻿using Microsoft.ML.Data;
 using Newtonsoft.Json;
 using System;
+using System.Device.Location;
 using System.Text.RegularExpressions;
 
 namespace BooliAPI.Models
@@ -23,6 +24,23 @@ namespace BooliAPI.Models
       {
         var date = DateTime.Parse(Published);
         return date.Year;
+      }
+    }
+
+    // return the distance from listing to city centre (km)
+    // City centre coordinates is here taken to be rådhustorget
+    public float DistanceToCityCentre
+    {
+      get
+      {
+        var cityCentreLat = 63.825910;
+        var cityCentreLong = 20.263166;
+
+        var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
+        var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
+
+        return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
+
       }
     }
 
