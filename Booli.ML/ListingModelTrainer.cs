@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using Microsoft.ML.Transforms;
 using System.Linq;
 
 namespace Booli.ML
@@ -49,6 +50,7 @@ namespace Booli.ML
                                                               nameof(SoldListing.Floor),
                                                               nameof(SoldListing.SoldYear),
                                                               nameof(SoldListing.PlotArea)))
+        .Append(_mlContext.Transforms.ReplaceMissingValues(nameof(SoldListing.ConstructionYear), nameof(SoldListing.ConstructionYear), MissingValueReplacingEstimator.ReplacementMode.Mean)) 
         .Append(trainer);
 
       return pipeline;
