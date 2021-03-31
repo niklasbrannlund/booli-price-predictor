@@ -1,4 +1,4 @@
-﻿using BooliAPI.Models;
+﻿using Booli.API.Models;
 using System.Collections.Generic;
 
 namespace BooliAPI

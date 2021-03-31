@@ -1,14 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿
+using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class Region
   {
 
-    [JsonProperty("municipalityName")]
+    [JsonPropertyName("municipalityName")]
     public string MunicipalityName { get; set; }
 
-    [JsonProperty("countyName")]
+    [JsonPropertyName("countyName")]
     public string CountyName { get; set; }
   }
 }

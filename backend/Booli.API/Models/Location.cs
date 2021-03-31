@@ -1,23 +1,23 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class Location
   {
-    [JsonProperty("address")]
+    [JsonPropertyName("address")]
     public Address Address { get; set; }
 
-    [JsonProperty("position")]
+    [JsonPropertyName("position")]
     public Position Position { get; set; }
 
-    [JsonProperty("namedAreas")]
+    [JsonPropertyName("namedAreas")]
     public IList<string> NamedAreas { get; set; }
 
-    [JsonProperty("region")]
+    [JsonPropertyName("region")]
     public Region Region { get; set; }
 
-    [JsonProperty("distance")]
+    [JsonPropertyName("distance")]
     public Distance Distance { get; set; }
   }
 }

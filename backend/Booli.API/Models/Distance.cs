@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class Distance
   {
-    [JsonProperty("ocean")]
+    [JsonPropertyName("ocean")]
     public int Ocean { get; set; }
   }
 }

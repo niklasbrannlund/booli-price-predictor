@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.API", "Booli.API\Booli.API.csproj", "{537B56AA-5B67-4A3E-900C-D7BD28BBCB0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.API_old", "Booli.API_old\Booli.API_old.csproj", "{537B56AA-5B67-4A3E-900C-D7BD28BBCB0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML", "Booli.ML\Booli.ML.csproj", "{EE95078D-F6B9-4BCF-96E1-0DA2FA48CF47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML_old", "Booli.ML_old\Booli.ML_old.csproj", "{EE95078D-F6B9-4BCF-96E1-0DA2FA48CF47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.App", "Booli.APP\Booli.App.csproj", "{436E861E-5C9E-41AF-B723-425024A4744E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.App_old", "Booli.APP\Booli.App_old.csproj", "{436E861E-5C9E-41AF-B723-425024A4744E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML.Test", "Booli.ML.Test\Booli.ML.Test.csproj", "{287505AB-DC67-42B6-891A-8EE220ED0919}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{8414F4E5-825B-4890-9633-A38F40993DCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.API", "Booli.API\Booli.API.csproj", "{5A15F36D-831A-465E-9EB5-D4B2F87ED653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,14 @@ Global
 		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|Any CPU.Build.0 = Release|Any CPU
 		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|x64.ActiveCfg = Release|Any CPU
 		{287505AB-DC67-42B6-891A-8EE220ED0919}.Release|x64.Build.0 = Release|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A15F36D-831A-465E-9EB5-D4B2F87ED653}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,51 +1,50 @@
-﻿using Microsoft.ML.Data;
-using Newtonsoft.Json;
+﻿// using Microsoft.ML.Data;
 using System;
-using System.Device.Location;
+using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class SoldListing
   {
-    [NoColumn]
-    [JsonProperty("location")]
+    // [NoColumn]
+    [JsonPropertyName("location")]
     public Location Location { get; set; }
 
-    [JsonProperty("constructionYear")]
+    [JsonPropertyName("constructionYear")]
     public float ConstructionYear { get; set; }
 
-    [JsonProperty("listPrice")]
+    [JsonPropertyName("listPrice")]
     public float ListPrice { get; set; }
 
-    [JsonProperty("rent")]
+    [JsonPropertyName("rent")]
     public float Rent { get; set; }
 
-    [JsonProperty("floor")]
+    [JsonPropertyName("floor")]
     public float Floor { get; set; }
 
-    [JsonProperty("livingArea")]
+    [JsonPropertyName("livingArea")]
     public float LivingArea { get; set; }
 
-    [NoColumn]
-    [JsonProperty("source")]
+    // [NoColumn]
+    [JsonPropertyName("source")]
     public Source Source { get; set; }
 
-    [JsonProperty("rooms")]
+    [JsonPropertyName("rooms")]
     public float Rooms { get; set; }
 
-    [NoColumn]
-    [JsonProperty("published")]
+    // [NoColumn]
+    [JsonPropertyName("published")]
     public string Published { get; set; }
 
-    [JsonProperty("objectType")]
+    [JsonPropertyName("objectType")]
     public string ObjectType { get; set; }
 
-    [NoColumn]
-    [JsonProperty("booliId")]
+    // [NoColumn]
+    [JsonPropertyName("booliId")]
     public int BooliId { get; set; }
 
-    [NoColumn]
-    [JsonProperty("soldDate")]
+    // [NoColumn]
+    [JsonPropertyName("soldDate")]
     public string SoldDate { get; set; }
 
     public float SoldYear
@@ -66,34 +65,45 @@ namespace BooliAPI.Models
         var cityCentreLat = 63.825910;
         var cityCentreLong = 20.263166;
 
-        var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
-        var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
+        var cityCentrCoord = (cityCentreLat, cityCentreLong);
+        var listingCoord = (this.Location.Position.Latitude, this.Location.Position.Longitude);
 
-        return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
+        return (float)CalculateDistance(cityCentrCoord, listingCoord);
 
       }
     }
+    
+    public double CalculateDistance((double lat, double lon) point1, (double lat, double lon) point2)
+        {
+            var d1 = point1.lat * (Math.PI / 180.0);
+            var num1 = point1.lon * (Math.PI / 180.0);
+            var d2 = point2.lat * (Math.PI / 180.0);
+            var num2 = point2.lon * (Math.PI / 180.0) - num1;
+            var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) +
+                     Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
+            return 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
+        }
 
-    [JsonProperty("soldPrice")]
-    [ColumnName("Label")]
+    [JsonPropertyName("soldPrice")]
+    // [ColumnName("Label")]
     public float SoldPrice { get; set; }
 
-    [NoColumn]
-    [JsonProperty("soldPriceSource")]
+    // [NoColumn]
+    [JsonPropertyName("soldPriceSource")]
     public string SoldPriceSource { get; set; }
 
-    [NoColumn]
-    [JsonProperty("url")]
+    // [NoColumn]
+    [JsonPropertyName("url")]
     public string Url { get; set; }
 
-    [JsonProperty("additionalArea")]
+    [JsonPropertyName("additionalArea")]
     public float AdditionalArea { get; set; }
 
-    [NoColumn]
-    [JsonProperty("apartmentNumber")]
+    // [NoColumn]
+    [JsonPropertyName("apartmentNumber")]
     public string ApartmentNumber { get; set; }
 
-    [JsonProperty("plotArea")]
+    [JsonPropertyName("plotArea")]
     public float PlotArea { get; set; }
   }
 }

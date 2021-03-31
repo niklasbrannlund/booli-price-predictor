@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Booli.ML</RootNamespace>
-    <AssemblyName>Booli.ML</AssemblyName>
+    <AssemblyName>Booli.ML_old</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -146,9 +146,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Booli.API\Booli.API.csproj">
-      <Project>{537B56AA-5B67-4A3E-900C-D7BD28BBCB0D}</Project>
-      <Name>Booli.API</Name>
+    <ProjectReference Include="..\Booli.API_old\Booli.API_old.csproj">
+      <Project>{537b56aa-5b67-4a3e-900c-d7bd28bbcb0d}</Project>
+      <Name>Booli.API_old</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

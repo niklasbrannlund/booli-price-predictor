@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿
+using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class SearchParams
   {
-    [JsonProperty("areaId")]
+    [JsonPropertyName("areaId")]
     public int AreaId { get; set; }
   }
 }

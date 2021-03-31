@@ -62,13 +62,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Booli.API\Booli.API.csproj">
-      <Project>{537B56AA-5B67-4A3E-900C-D7BD28BBCB0D}</Project>
-      <Name>Booli.API</Name>
+    <ProjectReference Include="..\Booli.API_old\Booli.API_old.csproj">
+      <Project>{537b56aa-5b67-4a3e-900c-d7bd28bbcb0d}</Project>
+      <Name>Booli.API_old</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Booli.ML\Booli.ML.csproj">
+    <ProjectReference Include="..\Booli.ML_old\Booli.ML_old.csproj">
       <Project>{ee95078d-f6b9-4bcf-96e1-0da2fa48cf47}</Project>
-      <Name>Booli.ML</Name>
+      <Name>Booli.ML_old</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

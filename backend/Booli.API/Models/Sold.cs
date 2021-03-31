@@ -1,26 +1,26 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class Sold
   {
-    [JsonProperty("totalCount")]
+    [JsonPropertyName("totalCount")]
     public int TotalCount { get; set; }
 
-    [JsonProperty("count")]
+    [JsonPropertyName("count")]
     public int Count { get; set; }
 
-    [JsonProperty("sold")]
+    [JsonPropertyName("sold")]
     public IList<SoldListing> SoldListings { get; set; }
 
-    [JsonProperty("limit")]
+    [JsonPropertyName("limit")]
     public int Limit { get; set; }
 
-    [JsonProperty("offset")]
+    [JsonPropertyName("offset")]
     public int Offset { get; set; }
 
-    [JsonProperty("searchParams")]
+    [JsonPropertyName("searchParams")]
     public SearchParams SearchParams { get; set; }
   }
 }

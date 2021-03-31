@@ -1,15 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class Address
   {
-    [JsonProperty("streetAddress")]
+    [JsonPropertyName("streetAddress")]
     public string StreetAddress { get; set; }
   }
 }

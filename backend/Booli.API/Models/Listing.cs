@@ -1,23 +1,17 @@
-﻿using Microsoft.ML.Data;
-using Newtonsoft.Json;
-using System;
-using LiteDB;
-using System.Device.Location;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.Json.Serialization;
 
-namespace BooliAPI.Models
+namespace Booli.API.Models
 {
   public class Listing
   {
-    [NoColumn]
-    [BsonId]
-    [JsonProperty("booliId")]
+    [JsonPropertyName("booliId")]
     public int BooliId { get; set; }
 
-    [JsonProperty("listPrice")]
+    [JsonPropertyName("listPrice")]
     public float ListPrice { get; set; }
 
-    [JsonProperty("published")]
+    [JsonPropertyName("published")]
     public string Published { get; set; }
 
     public float SoldYear
@@ -31,62 +25,62 @@ namespace BooliAPI.Models
 
     // return the distance from listing to city centre (km)
     // City centre coordinates is here taken to be rådhustorget
-    public float DistanceToCityCentre
-    {
-      get
-      {
-        var cityCentreLat = 63.825910;
-        var cityCentreLong = 20.263166;
+    // public float DistanceToCityCentre
+    // {
+    //   get
+    //   {
+    //     var cityCentreLat = 63.825910;
+    //     var cityCentreLong = 20.263166;
+    //
+    //     var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
+    //     var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
+    //
+    //     return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
+    //
+    //   }
+    // }
 
-        var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
-        var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
-
-        return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
-
-      }
-    }
-
-    [NoColumn]
-    [JsonProperty("source")]
+    // [NoColumn]
+    [JsonPropertyName("source")]
     public Source Source { get; set; }
 
-    [JsonProperty("floor")]
+    [JsonPropertyName("floor")]
     public float Floor { get; set; }
 
-    [NoColumn]
-    [JsonProperty("location")]
+    // [NoColumn]
+    [JsonPropertyName("location")]
     public Location Location { get; set; }
 
-    [JsonProperty("objectType")]
+    [JsonPropertyName("objectType")]
     public string ObjectType { get; set; }
 
-    [JsonProperty("rooms")]
+    [JsonPropertyName("rooms")]
     public float Rooms { get; set; }
 
-    [JsonProperty("livingArea")]
+    [JsonPropertyName("livingArea")]
     public float LivingArea { get; set; }
 
-    [JsonProperty("additionalArea")]
+    [JsonPropertyName("additionalArea")]
     public float AdditionalArea { get; set; }
 
-    [JsonProperty("plotArea")]
+    [JsonPropertyName("plotArea")]
     public float PlotArea { get; set; }
 
-    [JsonProperty("constructionYear")]
+    [JsonPropertyName("constructionYear")]
     public float ConstructionYear { get; set; }
 
-    [NoColumn]
-    [JsonProperty("url")]
+    // [NoColumn]
+    [JsonPropertyName("url")]
     public string Url { get; set; }
 
-    [NoColumn]
-    [JsonProperty("isNewConstruction")]
+    // [NoColumn]
+    [JsonPropertyName("isNewConstruction")]
     public float? IsNewConstruction { get; set; }
 
-    [JsonProperty("rent")]
+    [JsonPropertyName("rent")]
     public float Rent { get; set; }
 
-    [ColumnName("Label")]
+    // [ColumnName("Label")]
     public float SoldPrice { get; set; }
   }
 }
