@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using Microsoft.ML.Data;
 
 namespace Booli.API.Models
 {
@@ -25,29 +26,29 @@ namespace Booli.API.Models
 
     // return the distance from listing to city centre (km)
     // City centre coordinates is here taken to be rådhustorget
-    // public float DistanceToCityCentre
-    // {
-    //   get
-    //   {
-    //     var cityCentreLat = 63.825910;
-    //     var cityCentreLong = 20.263166;
-    //
-    //     var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
-    //     var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
-    //
-    //     return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
-    //
-    //   }
-    // }
+    public float DistanceToCityCentre
+    {
+      get
+      {
+        // var cityCentreLat = 63.825910;
+        // var cityCentreLong = 20.263166;
+        //
+        // var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
+        // var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
+        //
+        // return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
+        return (float)0.0;
+      }
+    }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("source")]
     public Source Source { get; set; }
 
     [JsonPropertyName("floor")]
     public float Floor { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("location")]
     public Location Location { get; set; }
 
@@ -69,18 +70,18 @@ namespace Booli.API.Models
     [JsonPropertyName("constructionYear")]
     public float ConstructionYear { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("url")]
     public string Url { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("isNewConstruction")]
     public float? IsNewConstruction { get; set; }
 
     [JsonPropertyName("rent")]
     public float Rent { get; set; }
 
-    // [ColumnName("Label")]
+    [ColumnName("Label")]
     public float SoldPrice { get; set; }
   }
 }

@@ -1,12 +1,13 @@
 ﻿// using Microsoft.ML.Data;
 using System;
 using System.Text.Json.Serialization;
+using Microsoft.ML.Data;
 
 namespace Booli.API.Models
 {
   public class SoldListing
   {
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("location")]
     public Location Location { get; set; }
 
@@ -25,25 +26,25 @@ namespace Booli.API.Models
     [JsonPropertyName("livingArea")]
     public float LivingArea { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("source")]
     public Source Source { get; set; }
 
     [JsonPropertyName("rooms")]
     public float Rooms { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("published")]
     public string Published { get; set; }
 
     [JsonPropertyName("objectType")]
     public string ObjectType { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("booliId")]
     public int BooliId { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("soldDate")]
     public string SoldDate { get; set; }
 
@@ -85,21 +86,21 @@ namespace Booli.API.Models
         }
 
     [JsonPropertyName("soldPrice")]
-    // [ColumnName("Label")]
+    [ColumnName("Label")]
     public float SoldPrice { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("soldPriceSource")]
     public string SoldPriceSource { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("url")]
     public string Url { get; set; }
 
     [JsonPropertyName("additionalArea")]
     public float AdditionalArea { get; set; }
 
-    // [NoColumn]
+    [NoColumn]
     [JsonPropertyName("apartmentNumber")]
     public string ApartmentNumber { get; set; }
 

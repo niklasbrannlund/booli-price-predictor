@@ -1,14 +1,11 @@
 ﻿using Booli.ML.Interfaces;
-using BooliAPI.Models;
+using Booli.API.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers.FastTree;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using Microsoft.ML.Transforms;
-using System.Linq;
 
 namespace Booli.ML
 {

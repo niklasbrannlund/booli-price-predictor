@@ -1,4 +1,4 @@
-﻿using BooliAPI.Models;
+﻿using Booli.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

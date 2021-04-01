@@ -5,11 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Booli.API\Booli.API.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Microsoft.ML">
         <Version>1.5.5</Version>
       </PackageReference>
-      <PackageReference Include="System.Text.Json">
-        <Version>5.0.1</Version>
+      <PackageReference Include="Microsoft.ML.FastTree">
+        <Version>1.5.5</Version>
       </PackageReference>
     </ItemGroup>
+
 </Project>

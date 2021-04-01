@@ -6,11 +6,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Booli.API.Models;
-using System.Text.Json;
+using BooliAPI;
 
 namespace Booli.API
 {
-    public class BooliApiClient
+    public class BooliApiClient : IAPIClient
     {
         private string _apiKey;
         private string _callerId;
@@ -54,17 +54,10 @@ namespace Booli.API
         {
           string result = "";
           T parsedObject = default;
-          try
+          using (var client = new HttpClient() { Timeout = TimeSpan.FromMilliseconds(10000) })
           {
-            using (var client = new HttpClient() { Timeout = TimeSpan.FromMilliseconds(500) })
-            {
-              result = await client.GetStringAsync(url);
-              parsedObject = System.Text.Json.JsonSerializer.Deserialize<T>(result);
-            }
-          }
-          catch (Exception ex)
-          {
-            Console.WriteLine($"Exception caught: {ex.Message}");
+            result = await client.GetStringAsync(url);
+            parsedObject = System.Text.Json.JsonSerializer.Deserialize<T>(result);
           }
           return parsedObject;
         }
