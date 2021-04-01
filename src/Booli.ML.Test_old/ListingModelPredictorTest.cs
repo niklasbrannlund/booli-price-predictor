@@ -1,20 +1,20 @@
-using System.Collections.Generic;
-using Booli.API.Models;
-using Booli.ML.Interfaces;
+﻿using Booli.ML.Interfaces;
 using BooliAPI;
+using BooliAPI.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Booli.ML.Test
 {
+    [TestClass]
     public class ListingModelPredictorTest
     {
-        
         private Mock<IAPIClient> _apiClientMock;
         private Mock<IRepository> _repositoryMock;
         private IList<Listing> _listingsToPredict;
-        
-        [SetUp]
+
+        [TestInitialize]
         public void Setup()
         {
             _listingsToPredict = new List<Listing>()
@@ -40,7 +40,7 @@ namespace Booli.ML.Test
             _repositoryMock = new Mock<IRepository>();
         }
 
-        [Test]
+        [TestMethod]
         public void CanConstruct()
         {
             var predictor = new ListingModelPredictor(_listingsToPredict, _repositoryMock.Object, null);
