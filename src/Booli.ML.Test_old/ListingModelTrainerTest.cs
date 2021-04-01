@@ -1,16 +1,21 @@
+﻿using System;
 using System.Collections.Generic;
-using Booli.API.Models;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using BooliAPI;
+using BooliAPI.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace Booli.ML.Test
 {
+    [TestClass]
     public class ListingModelTrainerTest
     {
         private IAPIClient _client;
         private List<SoldListing> _listingsForTraining;
-        [SetUp]
+
+        [TestInitialize]
         public void Setup()
         {
             _listingsForTraining = new List<SoldListing>();
@@ -19,7 +24,7 @@ namespace Booli.ML.Test
             _client = apiClientMock.Object;
         }
 
-        [Test]
+        [TestMethod]
         public void CanConstruct()
         {
             // Arrange & Act
