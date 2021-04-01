@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Booli.API;
 using Autofac;
 using Booli.ML;
@@ -18,10 +17,8 @@ namespace Booli.Console
        builder.RegisterType<ListingModelPredictor>().As<IPredictor>();
        builder.RegisterType<BooliRepository>().As<IRepository>().SingleInstance();
        builder.Register(c => new BooliApiClient(Environment.GetEnvironmentVariable("ApiKey"), Environment.GetEnvironmentVariable("CallerId"))).As<IAPIClient>();
-      //builder.RegisterType<BooliApiClient>().As<IAPIClient>().WithParameter("apiKey", )
-      //                                                       .WithParameter("callerId", );
-
-      return builder.Build().BeginLifetimeScope();
+      
+        return builder.Build().BeginLifetimeScope();
     }
   }
 }
