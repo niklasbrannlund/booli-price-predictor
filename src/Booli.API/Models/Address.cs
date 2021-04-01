@@ -2,9 +2,8 @@
 
 namespace Booli.API.Models
 {
-  public class Address
-  {
-    [JsonPropertyName("streetAddress")]
-    public string StreetAddress { get; set; }
-  }
+    public class Address
+    {
+        [JsonPropertyName("streetAddress")] public string StreetAddress { get; set; }
+    }
 }

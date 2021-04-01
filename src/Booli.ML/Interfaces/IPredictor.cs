@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Booli.ML.Interfaces
 {
-  public interface IPredictor
-  {
-    void CreatePredictionEngine();
-    void Predict();
-    void SavePredictions();
-  }
+    public interface IPredictor
+    {
+        void CreatePredictionEngine();
+        void Predict();
+        void SavePredictions();
+    }
 }

@@ -1,15 +1,11 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Booli.API.Models
 {
-  public class Region
-  {
+    public class Region
+    {
+        [JsonPropertyName("municipalityName")] public string MunicipalityName { get; set; }
 
-    [JsonPropertyName("municipalityName")]
-    public string MunicipalityName { get; set; }
-
-    [JsonPropertyName("countyName")]
-    public string CountyName { get; set; }
-  }
+        [JsonPropertyName("countyName")] public string CountyName { get; set; }
+    }
 }

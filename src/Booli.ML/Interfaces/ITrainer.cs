@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Booli.ML.Interfaces
 {
-  public interface ITrainer
-  {
-    void TrainModel();
-    void SaveModel(string modelPath);
-  }
+    public interface ITrainer
+    {
+        void TrainModel();
+        void SaveModel(string modelPath);
+    }
 }

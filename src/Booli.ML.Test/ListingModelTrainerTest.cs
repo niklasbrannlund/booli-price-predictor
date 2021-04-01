@@ -9,29 +9,29 @@ using Moq;
 
 namespace Booli.ML.Test
 {
-  [TestClass]
-  public class ListingModelTrainerTest
-  {
-    private IAPIClient _client;
-    private List<SoldListing> _listingsForTraining;
-
-    [TestInitialize]
-    public void Setup()
+    [TestClass]
+    public class ListingModelTrainerTest
     {
-      _listingsForTraining = new List<SoldListing>();
+        private IAPIClient _client;
+        private List<SoldListing> _listingsForTraining;
 
-      var apiClientMock = new Mock<IAPIClient>();
-      _client = apiClientMock.Object;
+        [TestInitialize]
+        public void Setup()
+        {
+            _listingsForTraining = new List<SoldListing>();
+
+            var apiClientMock = new Mock<IAPIClient>();
+            _client = apiClientMock.Object;
+        }
+
+        [TestMethod]
+        public void CanConstruct()
+        {
+            // Arrange & Act
+            var modeltrainer = new ListingModelTrainer(_listingsForTraining);
+
+            // Assert
+            Assert.IsNotNull(modeltrainer);
+        }
     }
-
-    [TestMethod]
-    public void CanConstruct()
-    {
-      // Arrange & Act
-      var modeltrainer = new ListingModelTrainer(_listingsForTraining);
-
-      // Assert
-      Assert.IsNotNull(modeltrainer);
-    }
-  }
 }

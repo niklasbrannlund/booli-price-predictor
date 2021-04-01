@@ -2,9 +2,8 @@
 
 namespace Booli.ML
 {
-  public class ListingPrediction
-  {
-    [ColumnName("Score")]
-    public float SoldPrice { get; set; }
-  }
+    public class ListingPrediction
+    {
+        [ColumnName("Score")] public float SoldPrice { get; set; }
+    }
 }
