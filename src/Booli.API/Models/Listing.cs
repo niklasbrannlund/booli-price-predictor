@@ -20,19 +20,9 @@ namespace Booli.API.Models
                 return date.Year;
             }
         }
-
-        // return the distance from listing to city centre (km)
-        // City centre coordinates is here taken to be rådhustorget
-        public float DistanceToCityCentre =>
-            // var cityCentreLat = 63.825910;
-            // var cityCentreLong = 20.263166;
-            //
-            // var cityCentrCoord = new GeoCoordinate(cityCentreLat, cityCentreLong);
-            // var listingCoord = new GeoCoordinate(this.Location.Position.Latitude, this.Location.Position.Longitude);
-            //
-            // return (float)Math.Round(listingCoord.GetDistanceTo(cityCentrCoord)/1000);
-            (float) 0.0;
-
+        
+        public float DistanceToCityCentre => Utils.GetDistanceToCityCentre(Location.Position.Latitude, Location.Position.Longitude);
+        
         [NoColumn]
         [JsonPropertyName("source")]
         public Source Source { get; set; }

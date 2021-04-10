@@ -1,12 +1,9 @@
 ﻿using Booli.ML.Interfaces;
 using Booli.API.Models;
 using Microsoft.ML;
-using Microsoft.ML.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Booli.API.Models;
 
 namespace Booli.ML
 {
