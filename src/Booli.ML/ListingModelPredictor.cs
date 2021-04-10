@@ -72,7 +72,7 @@ namespace Booli.ML
                 if (listing.ObjectType == "Tomt/Mark")
                     Console.WriteLine($"*       PlotArea:                    {listing.PlotArea}");
                 Console.WriteLine($"*       Construction year:           {listing.ConstructionYear}");
-                Console.WriteLine($"*       PREDICTED (FUTURE) PRICE:    {prediction.SoldPrice}");
+                Console.WriteLine($"*       PREDICTED PRICE:             {prediction.SoldPrice}");
                 Console.WriteLine(
                     $"*************************************************************************************************************\r\n");
             }

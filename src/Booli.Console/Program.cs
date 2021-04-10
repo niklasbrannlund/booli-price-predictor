@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using Autofac;
 using Booli.API.Models;
@@ -15,19 +14,25 @@ namespace Booli.Console
         {
             using (var scope = DependencyInjection.BuildDependencies())
             {
+                const string area = "Umeå";
+                var repo = scope.Resolve<IRepository>();
+
                 var apiClient = scope.Resolve<IAPIClient>();
                 var modelPath = Path.Combine(Environment.CurrentDirectory, "Data/",
-                    $"model_{DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture)}.zip");
-                const string area = "Umeå";
+                    $"ml_model_{area}.zip");
+                
+                // get sold listings
+                var soldListings = apiClient.GetSoldItemsAsync(area);
+
+                
+                // repo.GetPredictionById(soldListings.First().BooliId);
                 if (!File.Exists(modelPath))
                 {
-                    var soldListings = apiClient.GetSoldItemsAsync(area);
                     var trainer = scope.Resolve<ITrainer>(new TypedParameter(typeof(IList<SoldListing>), soldListings));
                     trainer.TrainModel();
                     trainer.SaveModel(modelPath);
                 }
 
-                var repo = scope.Resolve<IRepository>();
                 var listingsToPredict = apiClient.GetListingsAsync(area);
 
                 var predictor = scope.Resolve<IPredictor>(new TypedParameter(typeof(IList<Listing>), listingsToPredict),

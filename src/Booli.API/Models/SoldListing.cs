@@ -70,5 +70,7 @@ namespace Booli.API.Models
         public string ApartmentNumber { get; set; }
 
         [JsonPropertyName("plotArea")] public float PlotArea { get; set; }
+
+        public float PredictedSellingPrice { get; set; }
     }
 }

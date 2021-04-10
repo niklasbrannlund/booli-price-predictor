@@ -1,6 +1,7 @@
 ﻿using System;
 using Booli.API;
 using Autofac;
+using Booli.Lib;
 using Booli.ML;
 using Booli.ML.Interfaces;
 using BooliAPI;
