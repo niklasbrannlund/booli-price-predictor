@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Booli.API\Booli.API.csproj" />
+      <ProjectReference Include="..\Booli.Lib\Booli.Lib.csproj" />
     </ItemGroup>
 
     <ItemGroup>

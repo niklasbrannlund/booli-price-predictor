@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML", "Booli.ML\Booli.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.ML.Test", "Booli.ML.Test\Booli.ML.Test.csproj", "{30264AAB-F71D-41EA-A20A-30DC1107603A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booli.Lib", "Booli.Lib\Booli.Lib.csproj", "{7A00ECE0-57E0-4294-88A3-CDD573D85091}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,14 @@ Global
 		{30264AAB-F71D-41EA-A20A-30DC1107603A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30264AAB-F71D-41EA-A20A-30DC1107603A}.Release|x64.ActiveCfg = Release|Any CPU
 		{30264AAB-F71D-41EA-A20A-30DC1107603A}.Release|x64.Build.0 = Release|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Debug|x64.Build.0 = Debug|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A00ECE0-57E0-4294-88A3-CDD573D85091}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
